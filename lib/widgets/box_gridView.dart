@@ -12,7 +12,11 @@ class BoxGridView extends StatelessWidget {
       mainAxisSpacing: 20,
       children: data
           .map(
-            (i) => YearBox(yearName: i.yr, color: i.color),
+            (i) => InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, '/semester');
+                },
+                child: YearBox(yearName: i.yr, color: i.color)),
           )
           .toList(),
     );

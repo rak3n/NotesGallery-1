@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:notes_gallery/provider/authProvider.dart';
-import 'package:notes_gallery/screens/authScreen.dart';
+import 'package:notes_gallery/screens/sem_screen.dart';
+import 'package:notes_gallery/utils/constants/routes.dart';
 import 'package:notes_gallery/widgets/box_gridView.dart';
-import 'package:notes_gallery/widgets/year_box.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:provider/provider.dart';
-//color: Color.fromRGBO(51, 53, 117, 0)),))),
 
 void main() {
   runApp(MyApp());
@@ -23,6 +21,9 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
           ),
           home: MyHomePage(),
+          routes: {
+            SemesterScreen.routName: (ctx) => SemesterScreen(),
+          },
         ),
       ),
     );

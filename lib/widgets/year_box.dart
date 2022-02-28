@@ -13,13 +13,14 @@ class YearBox extends StatelessWidget {
       decoration:
           BoxDecoration(borderRadius: BorderRadius.circular(9), color: color),
       child: Center(
-          child: Text(
-        yearName,
-        style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-            color: Color.fromRGBO(222, 223, 238, 1)),
-      )),
+        child: Text(
+          yearName,
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              color: Color.fromRGBO(222, 223, 238, 1)),
+        ),
+      ),
     );
   }
 }
