@@ -16,6 +16,9 @@ class SemesterScreen extends StatelessWidget {
             .map((e) => Column(
                   children: [
                     ListTile(
+                      onTap: () {
+                        Navigator.of(context).pushNamed('/notes');
+                      },
                       title: Text(
                         e,
                         style: TextStyle(

@@ -16,9 +16,10 @@ class YearBox extends StatelessWidget {
         child: Text(
           yearName,
           style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-              color: Color.fromRGBO(222, 223, 238, 1)),
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+            color: Color.fromRGBO(222, 223, 238, 1),
+          ),
         ),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notes_gallery/provider/authProvider.dart';
+import 'package:notes_gallery/screens/notes_screen.dart';
 import 'package:notes_gallery/screens/sem_screen.dart';
 import 'package:notes_gallery/utils/constants/routes.dart';
 import 'package:notes_gallery/widgets/box_gridView.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
           home: MyHomePage(),
           routes: {
             SemesterScreen.routName: (ctx) => SemesterScreen(),
+            NotesScreen.routName: (ctx) => NotesScreen(),
           },
         ),
       ),
