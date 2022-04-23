@@ -1,8 +1,8 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:http/http.dart' as http;
 
 class Authh with ChangeNotifier {
@@ -31,11 +31,24 @@ class Authh with ChangeNotifier {
   //   return _userId;
   // }
   //f
+  Future<void> login(
+    String email,
+    String password,
+  ) async {
+    final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+    try {
+      _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      print(e);
+      print("unbal eot load useer");
+    }
+  }
 
   Future<void> _authenticate(
       String email, String password, String urlSegment) async {
     final url =
-        'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=AIzaSyDEck00lZfJiUAttZ5yT7HGF_edGhvTZoU-GC5upk9fHVA7ERg';
+        'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=AIzaSyBqFBMKeLjnLeqSBCtfXj3jog6g7K0QH4I';
     //this both are genrated by firebase
 
     try {

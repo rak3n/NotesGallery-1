@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:notes_gallery/provider/authProvider.dart';
+import 'package:provider/provider.dart';
 
 class AuthenticationScreen extends StatefulWidget {
   const AuthenticationScreen({Key? key}) : super(key: key);
@@ -10,6 +12,8 @@ class AuthenticationScreen extends StatefulWidget {
 
 class _AuthenticationScreenState extends State<AuthenticationScreen> {
   final _formKey = GlobalKey<FormState>();
+  final mailController = TextEditingController();
+  final passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,12 +26,12 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            // /mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               SizedBox(
                 height: 40,
               ),
               TextFormField(
+                controller: mailController,
                 decoration: InputDecoration(
                   labelText: "Email",
                   border: OutlineInputBorder(
@@ -46,7 +50,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                   ),
                 ),
                 validator: (value) {
-                  if (!value!.contains("@jietjodhpur.ac.in")) {
+                  if (!value!.contains("@")) {
                     return "Pls enter your college mail id";
                   }
                   return null;
@@ -56,6 +60,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                 height: 40,
               ),
               TextFormField(
+                controller: passwordController,
                 decoration: InputDecoration(
                   labelText: "Password",
                   border: OutlineInputBorder(
@@ -77,18 +82,21 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
               SizedBox(
                 height: 40,
               ),
-              Container(
-                  //  padding: const EdgeInsets.only(left: 150.0, top: 40.0),
+              Consumer<Authh>(
+                builder: (context, auth, child) => Container(
                   child: new ElevatedButton(
-                child: const Text('Submit'),
-                onPressed: () {
-                  // It returns true if the form is valid, otherwise returns false
-                  if (_formKey.currentState!.validate()) {
-                    // If the form is valid, display a Snackbar.
-                    print("aaaaaaaaaaaaaaaaaa");
-                  }
-                },
-              )),
+                    child: const Text('Submit'),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        print("aaaaaaaaaaaaaaaaaa");
+                        auth.login(
+                            mailController.text, passwordController.text);
+                        print("sucess");
+                      }
+                    },
+                  ),
+                ),
+              ),
             ],
           ),
         ),

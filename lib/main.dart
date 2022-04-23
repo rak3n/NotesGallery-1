@@ -19,14 +19,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider.value(value: Authh())],
+      providers: [
+        ChangeNotifierProvider.value(
+          value: Authh(),
+        ),
+      ],
       child: Consumer<Authh>(
         builder: (ctx, authh, _) => MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: MyHomePage(),
+          home: AuthenticationScreen(),
           builder: EasyLoading.init(),
           routes: {
             SemesterScreen.routName: (ctx) => SemesterScreen(),
