@@ -37,7 +37,7 @@ class Authh with ChangeNotifier {
   ) async {
     final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
     try {
-      _firebaseAuth.signInWithEmailAndPassword(
+      _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
       print(e);
