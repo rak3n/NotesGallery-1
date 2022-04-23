@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -24,7 +23,6 @@ class _NotesScreenState extends State<NotesScreen> {
       bucket: 'gs://notesgallery-8b124.appspot.com');
   bool isPDFRequested = false;
   bool isPDFLoading = false;
-  late PDFDocument _pdf;
   Uint8List? _documentBytes;
 
   Future<void> getFirebaseData() async {
@@ -57,7 +55,6 @@ class _NotesScreenState extends State<NotesScreen> {
   @override
   void initState() {
     super.initState();
-    print('initi');
     getFirebaseData();
   }
 

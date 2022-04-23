@@ -14,7 +14,7 @@ class BoxGridView extends StatelessWidget {
           .map(
             (i) => InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, '/semester');
+                  Navigator.pushNamed(context, '/auth');
                 },
                 child: YearBox(yearName: i.yr, color: i.color)),
           )

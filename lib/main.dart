@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_gallery/provider/authProvider.dart';
+import 'package:notes_gallery/screens/authentication_screen.dart';
 import 'package:notes_gallery/screens/notes_screen.dart';
 import 'package:notes_gallery/screens/sem_screen.dart';
 import 'package:notes_gallery/utils/constants/routes.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
           routes: {
             SemesterScreen.routName: (ctx) => SemesterScreen(),
             NotesScreen.routName: (ctx) => NotesScreen(),
+            AuthenticationScreen.routName: (ctx) => AuthenticationScreen(),
           },
         ),
       ),
