@@ -4,11 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:notes_gallery/utils/give_exception.dart';
 
 class Authentication with ChangeNotifier {
   String? _token;
   String? _userId;
   DateTime? _expiryDate;
+  String? _status;
 
   bool get isAuth {
     return token != null;
@@ -23,6 +25,10 @@ class Authentication with ChangeNotifier {
     return null;
   }
 
+  String? get status {
+    return _status;
+  }
+
   String? get userId {
     return _userId;
   }
@@ -31,7 +37,7 @@ class Authentication with ChangeNotifier {
   //   return _userId;
   // }
   //f
-  Future<void> signIn(
+  Future<String?> signIn(
     String email,
     String password,
   ) async {
@@ -41,17 +47,22 @@ class Authentication with ChangeNotifier {
         email: email,
         password: password,
       );
+      print(" USER SIGN IN HERE->  ${user}");
       _userId = user.user!.uid;
-      print(" User additionalUserInfo->  ${user.additionalUserInfo}");
-      print(" User user->  ${user.user}");
+
+      _status = "successful";
       notifyListeners();
+
+      return status;
     } on FirebaseAuthException catch (e) {
-      print(e);
-      print("unable to sign in user");
+      _status = AuthExceptionHandler.handleException(e);
+      notifyListeners();
+
+      return status;
     }
   }
 
-  Future<void> signUp(
+  Future<String?> signUp(
     String email,
     String password,
   ) async {
@@ -61,15 +72,18 @@ class Authentication with ChangeNotifier {
         email: email,
         password: password,
       );
-      print(user.additionalUserInfo);
-      print(user.additionalUserInfo!.isNewUser);
-      print(" User additionalUserInfo->  ${user.additionalUserInfo}");
-      print(" User user->  ${user.user}");
+      print(user);
+
       _userId = user.user!.uid;
+      _status = "successful";
       notifyListeners();
+
+      return status;
     } on FirebaseAuthException catch (e) {
-      print(e);
-      print("unable to log up user");
+      _status = AuthExceptionHandler.handleException(e);
+      notifyListeners();
+
+      return status;
     }
   }
 

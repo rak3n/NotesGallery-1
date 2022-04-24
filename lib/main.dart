@@ -4,8 +4,6 @@ import 'package:notes_gallery/provider/authProvider.dart';
 import 'package:notes_gallery/screens/login_screen.dart';
 import 'package:notes_gallery/screens/notes_screen.dart';
 import 'package:notes_gallery/screens/sem_screen.dart';
-import 'package:notes_gallery/screens/sign_up_screen.dart';
-import 'package:notes_gallery/utils/constants/routes.dart';
 import 'package:notes_gallery/widgets/box_gridView.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';

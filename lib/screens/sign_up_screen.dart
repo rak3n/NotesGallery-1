@@ -17,6 +17,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   bool isloading = false;
+  void showErrorDialog(String message) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: Text("An error occur"),
+              content: Text(message),
+              actions: <Widget>[
+                ElevatedButton(
+                  child: Text("Okay"),
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                )
+              ],
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,7 +146,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: isloading
                             ? CircularProgressIndicator()
                             : const Text('Submit'),
-                        onPressed: () {
+                        onPressed: () async {
                           if (!_formKey.currentState!.validate()) {
                             return;
                           }
@@ -137,8 +154,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             isloading = true;
                           });
                           _formKey.currentState!.save();
-                          auth.signUp(mailController.text,
-                              confirmPasswordController.text);
+                          final status = await auth.signIn(
+                              mailController.text, passwordController.text);
+                          if (status != "successful") {
+                            showErrorDialog(status ?? "");
+                          }
+                          setState(() {
+                            isloading = false;
+                          });
                         },
                       ),
                     ),

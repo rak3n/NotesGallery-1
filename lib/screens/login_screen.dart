@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_gallery/provider/authProvider.dart';
 import 'package:provider/provider.dart';
+
+import '../utils/give_exception.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -102,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: isloading
                             ? CircularProgressIndicator()
                             : const Text('Submit'),
-                        onPressed: () {
+                        onPressed: () async {
                           if (!_formKey.currentState!.validate()) {
                             return;
                           }
@@ -110,12 +113,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             isloading = true;
                           });
                           _formKey.currentState!.save();
-                          try {
-                            auth.signIn(
-                                mailController.text, passwordController.text);
-                          } catch (e) {
-                            showErrorDialog("Unable to login user.Try Again!");
+
+                          final status = await auth.signIn(
+                              mailController.text, passwordController.text);
+                          if (status != "successful") {
+                            showErrorDialog(status ?? "");
                           }
+                          setState(() {
+                            isloading = false;
+                          });
                         },
                       ),
                     ),
