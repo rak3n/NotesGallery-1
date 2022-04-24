@@ -1,9 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_gallery/provider/authProvider.dart';
+import 'package:notes_gallery/provider/noteProvider.dart';
 import 'package:notes_gallery/screens/login_screen.dart';
 import 'package:notes_gallery/screens/notes_screen.dart';
 import 'package:notes_gallery/screens/sem_screen.dart';
+import 'package:notes_gallery/screens/sign_up_screen.dart';
 import 'package:notes_gallery/widgets/box_gridView.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -22,6 +24,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: Authentication(),
         ),
+        ChangeNotifierProvider.value(
+          value: NotesProvider(),
+        ),
       ],
       child: Consumer<Authentication>(
         builder: (ctx, auth, _) => MaterialApp(
@@ -35,6 +40,7 @@ class MyApp extends StatelessWidget {
             SemesterScreen.routName: (ctx) => SemesterScreen(),
             NotesScreen.routName: (ctx) => NotesScreen(),
             LoginScreen.routName: (ctx) => LoginScreen(),
+            SignUpScreen.routName: (ctx) => SignUpScreen(),
           },
         ),
       ),

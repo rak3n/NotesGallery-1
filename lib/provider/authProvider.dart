@@ -47,7 +47,9 @@ class Authentication with ChangeNotifier {
         email: email,
         password: password,
       );
-      print(" USER SIGN IN HERE->  ${user}");
+      print(" USER user detail-:  ${user.user}");
+      print(" USER additional user info  detail-:  ${user.additionalUserInfo}");
+      print(" USER credential detail-:  ${user.credential}");
       _userId = user.user!.uid;
 
       _status = "successful";

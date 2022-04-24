@@ -154,7 +154,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             isloading = true;
                           });
                           _formKey.currentState!.save();
-                          final status = await auth.signIn(
+                          final status = await auth.signUp(
                               mailController.text, passwordController.text);
                           if (status != "successful") {
                             showErrorDialog(status ?? "");
@@ -172,7 +172,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   TextButton(
                     child: Text("Already have account! Login ->"),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/login');
+                      Navigator.pushReplacementNamed(context, '/login');
                     },
                   )
                 ],

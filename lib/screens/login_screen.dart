@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:notes_gallery/models/note.dart';
 import 'package:notes_gallery/provider/authProvider.dart';
+import 'package:notes_gallery/provider/noteProvider.dart';
 import 'package:provider/provider.dart';
 
 import '../utils/give_exception.dart';
@@ -122,6 +124,34 @@ class _LoginScreenState extends State<LoginScreen> {
                           setState(() {
                             isloading = false;
                           });
+                        },
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  TextButton(
+                    child: Text("Don't have account! SignUp ->"),
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, '/auth');
+                    },
+                  ),
+                  Consumer<NotesProvider>(
+                    builder: (context, note, child) => Container(
+                      child: ElevatedButton(
+                        child: isloading
+                            ? CircularProgressIndicator()
+                            : const Text('Send data'),
+                        onPressed: () async {
+                          note.addPdfNote(
+                            Note(
+                              id: "1",
+                              name: "name",
+                              url: "url",
+                              likes: ["likes"],
+                            ),
+                          );
                         },
                       ),
                     ),
