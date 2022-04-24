@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class Authh with ChangeNotifier {
+class Authentication with ChangeNotifier {
   String? _token;
   String? _userId;
   DateTime? _expiryDate;
@@ -31,17 +31,45 @@ class Authh with ChangeNotifier {
   //   return _userId;
   // }
   //f
-  Future<void> login(
+  Future<void> signIn(
     String email,
     String password,
   ) async {
     final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
     try {
-      _firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      UserCredential user = await _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      _userId = user.user!.uid;
+      print(" User additionalUserInfo->  ${user.additionalUserInfo}");
+      print(" User user->  ${user.user}");
+      notifyListeners();
     } on FirebaseAuthException catch (e) {
       print(e);
-      print("unbal eot load useer");
+      print("unable to sign in user");
+    }
+  }
+
+  Future<void> signUp(
+    String email,
+    String password,
+  ) async {
+    final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+    try {
+      UserCredential user = await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      print(user.additionalUserInfo);
+      print(user.additionalUserInfo!.isNewUser);
+      print(" User additionalUserInfo->  ${user.additionalUserInfo}");
+      print(" User user->  ${user.user}");
+      _userId = user.user!.uid;
+      notifyListeners();
+    } on FirebaseAuthException catch (e) {
+      print(e);
+      print("unable to log up user");
     }
   }
 
@@ -85,11 +113,11 @@ class Authh with ChangeNotifier {
     }
   }
 
-  Future<void> signUp(String? email, String? password) async {
-    return _authenticate(email!, password!, 'signUp');
-  }
+  // Future<void> signUp(String? email, String? password) async {
+  //   return _authenticate(email!, password!, 'signUp');
+  // }
 
-  Future<void> signIn(String? email, String? password) async {
-    return _authenticate(email!, password!, 'signInWithPassword');
-  }
+  // Future<void> signIn(String? email, String? password) async {
+  //   return _authenticate(email!, password!, 'signInWithPassword');
+  // }
 }

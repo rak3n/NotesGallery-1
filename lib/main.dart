@@ -1,9 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_gallery/provider/authProvider.dart';
-import 'package:notes_gallery/screens/authentication_screen.dart';
+import 'package:notes_gallery/screens/login_screen.dart';
 import 'package:notes_gallery/screens/notes_screen.dart';
 import 'package:notes_gallery/screens/sem_screen.dart';
+import 'package:notes_gallery/screens/sign_up_screen.dart';
 import 'package:notes_gallery/utils/constants/routes.dart';
 import 'package:notes_gallery/widgets/box_gridView.dart';
 import 'package:provider/provider.dart';
@@ -21,21 +22,21 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
-          value: Authh(),
+          value: Authentication(),
         ),
       ],
-      child: Consumer<Authh>(
-        builder: (ctx, authh, _) => MaterialApp(
+      child: Consumer<Authentication>(
+        builder: (ctx, auth, _) => MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: AuthenticationScreen(),
+          home: auth.userId == null ? LoginScreen() : MyHomePage(),
           builder: EasyLoading.init(),
           routes: {
             SemesterScreen.routName: (ctx) => SemesterScreen(),
             NotesScreen.routName: (ctx) => NotesScreen(),
-            AuthenticationScreen.routName: (ctx) => AuthenticationScreen(),
+            LoginScreen.routName: (ctx) => LoginScreen(),
           },
         ),
       ),
