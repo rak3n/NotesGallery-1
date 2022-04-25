@@ -139,20 +139,32 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   Consumer<NotesProvider>(
                     builder: (context, note, child) => Container(
-                      child: ElevatedButton(
-                        child: isloading
-                            ? CircularProgressIndicator()
-                            : const Text('Send data'),
-                        onPressed: () async {
-                          note.addPdfNote(
-                            Note(
-                              id: "1",
-                              name: "name",
-                              url: "url",
-                              likes: ["likes"],
-                            ),
-                          );
-                        },
+                      child: Column(
+                        children: [
+                          ElevatedButton(
+                            child: isloading
+                                ? CircularProgressIndicator()
+                                : const Text('Send data'),
+                            onPressed: () async {
+                              note.addPdfNote(
+                                Note(
+                                  creatorId: "sailu",
+                                  noteId: "1",
+                                  name: "name",
+                                  url: "url",
+                                  likes: ["likes"],
+                                ),
+                              );
+                            },
+                          ),
+                          SizedBox(),
+                          ElevatedButton(
+                            onPressed: () {
+                              note.fetchNotes();
+                            },
+                            child: Text("succk me"),
+                          )
+                        ],
                       ),
                     ),
                   ),

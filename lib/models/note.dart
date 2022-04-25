@@ -1,10 +1,12 @@
 class Note {
+  final String creatorId;
   final String name;
-  final String id;
+  final String noteId;
   final String url;
-  List<String> likes;
+  List<dynamic> likes;
   Note({
-    required this.id,
+    required this.creatorId,
+    required this.noteId,
     required this.name,
     required this.url,
     required this.likes,
