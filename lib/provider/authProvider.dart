@@ -43,7 +43,8 @@ class Authentication with ChangeNotifier {
       );
       _userId = user.user!.uid;
       print(" User additionalUserInfo->  ${user.additionalUserInfo}");
-      print(" User user->  ${user.user}");
+      IdTokenResult? token = await user.user?.getIdTokenResult(true);
+      print(" User user->  ${token}");
       notifyListeners();
     } on FirebaseAuthException catch (e) {
       print(e);
