@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:notes_gallery/provider/authProvider.dart';
-import 'package:notes_gallery/screens/authScreen.dart';
+import 'package:notes_gallery/provider/noteProvider.dart';
 import 'package:provider/provider.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
-  static const routName = '/auth';
+  static const routName = '/login';
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final mailController = TextEditingController();
   final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
   bool isloading = false;
   void showErrorDialog(String message) {
     showDialog(
@@ -38,7 +37,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create new user"),
+        title: Text("Lets Sign in"),
       ),
       body: ListView(
         children: [
@@ -71,13 +70,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                     ),
-                    validator: (value) {
-                      if (!value!.contains("@")) {
-                        //TODO: change condition for jietjodhpur
-                        return "Pls enter your college mail id";
-                      }
-                      return null;
-                    },
                   ),
                   SizedBox(
                     height: 40,
@@ -101,41 +93,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                     ),
-                    validator: (value) {
-                      if (value!.length < 6) {
-                        return "Password should be greater than 6 characters";
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  TextFormField(
-                    controller: confirmPasswordController,
-                    decoration: InputDecoration(
-                      labelText: "Confirm Password",
-                      border: OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(25.0),
-                        borderSide: new BorderSide(),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(25.0),
-                        borderSide: new BorderSide(),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(25.0),
-                        borderSide: new BorderSide(
-                          color: Colors.red,
-                        ),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value != passwordController.text) {
-                        return "Both password field must be same";
-                      }
-                      return null;
-                    },
                   ),
                   SizedBox(
                     height: 40,
@@ -154,7 +111,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             isloading = true;
                           });
                           _formKey.currentState!.save();
-                          final status = await auth.signUp(
+
+                          final status = await auth.signIn(
                               mailController.text, passwordController.text);
                           if (status != "successful") {
                             showErrorDialog(status ?? "");
@@ -170,11 +128,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 40,
                   ),
                   TextButton(
-                    child: Text("Already have account! Login ->"),
+                    child: Text("Don't have account! SignUp ->"),
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/login');
+                      Navigator.pushReplacementNamed(context, '/auth');
                     },
-                  )
+                  ),
+                  Consumer<NotesProvider>(
+                    builder: (context, note, child) => Container(
+                      child: Column(
+                        children: [
+                          ElevatedButton(
+                            child: isloading
+                                ? CircularProgressIndicator()
+                                : const Text('Send data'),
+                            onPressed: () async {
+                              print("NO ACTOIN  FCK ME");
+                              // note.addPdfNote(
+
+                              // );
+                            },
+                          ),
+                          SizedBox(),
+                          ElevatedButton(
+                            onPressed: () {
+                              note.fetchNotes(false);
+                            },
+                            child: Text("succk me"),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

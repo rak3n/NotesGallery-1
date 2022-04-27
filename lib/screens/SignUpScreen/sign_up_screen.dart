@@ -1,24 +1,20 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:notes_gallery/models/note.dart';
 import 'package:notes_gallery/provider/authProvider.dart';
-import 'package:notes_gallery/provider/noteProvider.dart';
 import 'package:provider/provider.dart';
 
-import '../utils/give_exception.dart';
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({Key? key}) : super(key: key);
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
-
-  static const routName = '/login';
+  static const routName = '/auth';
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   final mailController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
   bool isloading = false;
   void showErrorDialog(String message) {
     showDialog(
@@ -41,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Lets Sign in"),
+        title: Text("Create new user"),
       ),
       body: ListView(
         children: [
@@ -74,6 +70,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
+                    validator: (value) {
+                      if (!value!.contains("@")) {
+                        //TODO: change condition for jietjodhpur
+                        return "Pls enter your college mail id";
+                      }
+                      return null;
+                    },
                   ),
                   SizedBox(
                     height: 40,
@@ -97,6 +100,41 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
+                    validator: (value) {
+                      if (value!.length < 6) {
+                        return "Password should be greater than 6 characters";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  TextFormField(
+                    controller: confirmPasswordController,
+                    decoration: InputDecoration(
+                      labelText: "Confirm Password",
+                      border: OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(25.0),
+                        borderSide: new BorderSide(),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(25.0),
+                        borderSide: new BorderSide(),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(25.0),
+                        borderSide: new BorderSide(
+                          color: Colors.red,
+                        ),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value != passwordController.text) {
+                        return "Both password field must be same";
+                      }
+                      return null;
+                    },
                   ),
                   SizedBox(
                     height: 40,
@@ -115,8 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             isloading = true;
                           });
                           _formKey.currentState!.save();
-
-                          final status = await auth.signIn(
+                          final status = await auth.signUp(
                               mailController.text, passwordController.text);
                           if (status != "successful") {
                             showErrorDialog(status ?? "");
@@ -132,42 +169,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 40,
                   ),
                   TextButton(
-                    child: Text("Don't have account! SignUp ->"),
+                    child: Text("Already have account! Login ->"),
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/auth');
+                      Navigator.pushReplacementNamed(context, '/login');
                     },
-                  ),
-                  Consumer<NotesProvider>(
-                    builder: (context, note, child) => Container(
-                      child: Column(
-                        children: [
-                          ElevatedButton(
-                            child: isloading
-                                ? CircularProgressIndicator()
-                                : const Text('Send data'),
-                            onPressed: () async {
-                              note.addPdfNote(
-                                Note(
-                                  creatorId: "creatorId",
-                                  noteId: "1",
-                                  name: "name",
-                                  url: "url",
-                                  likes: ["likes"],
-                                ),
-                              );
-                            },
-                          ),
-                          SizedBox(),
-                          ElevatedButton(
-                            onPressed: () {
-                              note.fetchNotes(false);
-                            },
-                            child: Text("succk me"),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
+                  )
                 ],
               ),
             ),

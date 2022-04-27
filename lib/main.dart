@@ -2,10 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_gallery/provider/authProvider.dart';
 import 'package:notes_gallery/provider/noteProvider.dart';
-import 'package:notes_gallery/screens/login_screen.dart';
+import 'package:notes_gallery/screens/LoginScreen/login_screen.dart';
 import 'package:notes_gallery/screens/notes_screen.dart';
 import 'package:notes_gallery/screens/sem_screen.dart';
-import 'package:notes_gallery/screens/sign_up_screen.dart';
+import 'package:notes_gallery/screens/SignUpScreen/sign_up_screen.dart';
 import 'package:notes_gallery/widgets/box_gridView.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: auth.userId == null ? LoginScreen() : MyHomePage(),
+          home: NotesScreen(),
           builder: EasyLoading.init(),
           routes: {
             SemesterScreen.routName: (ctx) => SemesterScreen(),
