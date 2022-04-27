@@ -25,9 +25,12 @@ class NotesProvider with ChangeNotifier {
     }
   }
 
-  Future<void> fetchNotes() async {
+  Future<void> fetchNotes([bool filterByCreatorId = false]) async {
+    var userId = "creatorId";
+    String filterString =
+        filterByCreatorId ? 'orderBy="creatorId"&equalTo="$userId"' : "";
     final url = Uri.parse(
-        'https://notegallery-f483a-default-rtdb.europe-west1.firebasedatabase.app/note.json');
+        'https://notegallery-f483a-default-rtdb.europe-west1.firebasedatabase.app/note.json?$filterString');
 
     final response = await http.get(url);
 
@@ -49,7 +52,7 @@ class NotesProvider with ChangeNotifier {
     notesList = noteTempList;
 
     print(" fetchNotes response->     ${json.decode(response.body)}");
-    print(notesList[0].noteId);
+    print(notesList.length);
     notifyListeners();
   }
 }

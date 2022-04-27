@@ -148,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () async {
                               note.addPdfNote(
                                 Note(
-                                  creatorId: "sailu",
+                                  creatorId: "creatorId",
                                   noteId: "1",
                                   name: "name",
                                   url: "url",
@@ -160,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(),
                           ElevatedButton(
                             onPressed: () {
-                              note.fetchNotes();
+                              note.fetchNotes(false);
                             },
                             child: Text("succk me"),
                           )
