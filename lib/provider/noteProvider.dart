@@ -61,9 +61,9 @@ class NotesProvider with ChangeNotifier {
     final response = await http.get(url);
 
     final responseData = json.decode(response.body) as Map<String, dynamic>;
-    print("bugmme");
+
     if (responseData == null) return;
-    print('NOT BUGS');
+    print('Resposne  data for fecth Pdf--->${responseData}');
     final List<Note> noteTempList = [];
     responseData.forEach((id, noteData) {
       noteTempList.add(
@@ -74,7 +74,9 @@ class NotesProvider with ChangeNotifier {
           noteId: id,
           name: noteData['name'],
           url: noteData['url'],
-          likes: ["a"], //TODO: change here:
+          likes: noteData['likes'] == null
+              ? []
+              : noteData['likes'] as List, //TODO: change here:
         ),
       );
     });

@@ -1,13 +1,11 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:notes_gallery/models/note.dart';
 import 'package:notes_gallery/provider/noteProvider.dart';
+import 'package:notes_gallery/utils/constants/routes.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -66,11 +64,8 @@ class _NotesScreenState extends State<NotesScreen> {
     }
   }
 
-  @override
-  void initState() {
-    Provider.of<NotesProvider>(context, listen: false).fetchNotes();
-    // TODO: implement initState
-    super.initState();
+  Future<void> _loadPDfs(BuildContext context) async {
+    await Provider.of<NotesProvider>(context, listen: false).fetchNotes();
   }
 
   @override
@@ -83,42 +78,52 @@ class _NotesScreenState extends State<NotesScreen> {
         title: Text("Your Notes"),
         backgroundColor: Color.fromRGBO(28, 101, 133, 1),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Consumer<NotesProvider>(
-          builder: (context, note, _) => GridView.count(
-            crossAxisCount: 3,
-            childAspectRatio: 5 / 6,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            children: note.notesList
-                .map(
-                  (e) => GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      height: 50,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(e.year),
-                          Icon(
-                            Icons.picture_as_pdf_outlined,
-                            color: Colors.red,
-                          )
-                        ],
-                      ),
+      body: FutureBuilder(
+          future: _loadPDfs(context),
+          builder: (context, snapshot) {
+            return snapshot.connectionState == ConnectionState.waiting
+                ? Center(child: CircularProgressIndicator())
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Consumer<NotesProvider>(
+                      builder: (context, note, _) {
+                        return GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithMaxCrossAxisExtent(
+                                  maxCrossAxisExtent: 200,
+                                  childAspectRatio: 5 / 6,
+                                  crossAxisSpacing: 10,
+                                  mainAxisSpacing: 10),
+                          itemCount: note.notesList.length,
+                          itemBuilder: (context, i) {
+                            final loadedNoteItem = note.notesList[i];
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, Routes.pdfViewer,
+                                    arguments: loadedNoteItem.url);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                height: 50,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(loadedNoteItem.year),
+                                    // SfPdfViewer.network(e.url),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
                     ),
-                  ),
-                )
-                .toList(),
-          ),
-        ),
-      ),
+                  );
+          }),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.amber,
         child: Icon(
