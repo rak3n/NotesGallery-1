@@ -49,11 +49,11 @@ class _NotesScreenState extends State<NotesScreen> {
           Note(
             subject: note.subject,
             year: note.year,
-            creatorId: "creatorId",
-            noteId: "noteId",
-            name: "name",
+            creatorId: note.creatorId,
+            noteId: note.noteId,
+            name: note.name,
             url: downloadUrl,
-            likes: ["a"],
+            likes: note.likes,
           ),
         );
         Navigator.pop(context);
@@ -105,6 +105,7 @@ class _NotesScreenState extends State<NotesScreen> {
                             itemCount: note.notesList.length,
                             itemBuilder: (context, i) => PdfCard(
                               note: note.notesList[i],
+                              userId: note.userId ?? "",
                             ),
                           );
                         },
@@ -165,30 +166,33 @@ class _NotesScreenState extends State<NotesScreen> {
                           },
                         ),
                         Text("Select a pdf from your device:"),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          height: 30,
-                          width: 80,
-                          child: Center(
-                            child: GestureDetector(
-                              onTap: () {
-                                getPdfAndUpload(Note(
+                        Consumer<NotesProvider>(
+                          builder: (context, note, child) => Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            height: 30,
+                            width: 80,
+                            child: Center(
+                              child: GestureDetector(
+                                onTap: () {
+                                  getPdfAndUpload(Note(
                                     subject: subject,
                                     year: year,
-                                    creatorId: "creatorId",
-                                    noteId: "noteId",
+                                    creatorId: note.userId ?? "",
+                                    noteId: "",
                                     name: "name",
                                     url: "",
-                                    likes: ["likes", "yikes"]));
-                              },
-                              child: Text(
-                                "Select a file",
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w500,
+                                    likes: [],
+                                  ));
+                                },
+                                child: Text(
+                                  "Select a file",
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ),

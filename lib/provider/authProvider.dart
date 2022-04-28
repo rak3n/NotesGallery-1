@@ -46,10 +46,9 @@ class Authentication with ChangeNotifier {
         password: password,
       );
       print(" USER user detail-:  ${user.user}");
-      IdTokenResult? token = await user.user?.getIdTokenResult(true);
-      print(" User user->  ${token}");
-      _userId = user.user!.uid;
-
+      IdTokenResult? idTokenResult = await user.user?.getIdTokenResult(true);
+      print(" User user-> result  ${idTokenResult!.claims!['user_id']}");
+      _userId = idTokenResult.claims?['user_id'] ?? "";
       _status = "successful";
       notifyListeners();
 
@@ -61,28 +60,6 @@ class Authentication with ChangeNotifier {
       return status;
     }
   }
-
-  // Future<void> signUp(
-  //   String email,
-  //   String password,
-  // ) async {
-  //   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  //   try {
-  //     UserCredential user = await _firebaseAuth.createUserWithEmailAndPassword(
-  //       email: email,
-  //       password: password,
-  //     );
-  //     print(user.additionalUserInfo);
-  //     print(user.additionalUserInfo!.isNewUser);
-  //     print(" User additionalUserInfo->  ${user.additionalUserInfo}");
-  //     print(" User user->  ${user.user}");
-  //     _userId = user.user!.uid;
-  //     notifyListeners();
-  //   } on FirebaseAuthException catch (e) {
-  //     print(e);
-  //     print("unable to log up user");
-  //   }
-  // }
 
   Future<String?> _authenticate(
       String email, String password, String urlSegment) async {
@@ -101,6 +78,7 @@ class Authentication with ChangeNotifier {
           encoding: Encoding.getByName('utf-8'));
 
       final responseData = json.decode(response.body);
+
       print(responseData);
       print('\n\n\n\n\n');
       //if response data is not null ie it has get values do this\

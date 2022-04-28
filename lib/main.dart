@@ -25,8 +25,13 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: Authentication(),
         ),
-        ChangeNotifierProvider.value(
-          value: NotesProvider(),
+        ChangeNotifierProxyProvider<Authentication, NotesProvider>(
+          create: (_) => NotesProvider(userId: '', token: '', notesList: []),
+          update: (context, auth, value) => NotesProvider(
+            userId: auth.userId,
+            token: auth.token,
+            notesList: value?.notesList ?? [],
+          ),
         ),
       ],
       child: Consumer<Authentication>(
@@ -35,7 +40,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: NotesScreen(),
+          home: auth.userId != null ? NotesScreen() : SignUpScreen(),
           builder: EasyLoading.init(),
           routes: {
             SemesterScreen.routName: (ctx) => SemesterScreen(),
