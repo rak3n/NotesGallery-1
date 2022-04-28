@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:notes_gallery/models/note.dart';
 import 'package:notes_gallery/provider/noteProvider.dart';
+import 'package:notes_gallery/screens/NotesScreen/widgets/pdfCard.dart';
 import 'package:notes_gallery/utils/constants/routes.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
@@ -78,52 +79,39 @@ class _NotesScreenState extends State<NotesScreen> {
         title: Text("Your Notes"),
         backgroundColor: Color.fromRGBO(28, 101, 133, 1),
       ),
-      body: FutureBuilder(
-          future: _loadPDfs(context),
-          builder: (context, snapshot) {
-            return snapshot.connectionState == ConnectionState.waiting
-                ? Center(child: CircularProgressIndicator())
-                : Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Consumer<NotesProvider>(
-                      builder: (context, note, _) {
-                        return GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 200,
-                                  childAspectRatio: 5 / 6,
-                                  crossAxisSpacing: 10,
-                                  mainAxisSpacing: 10),
-                          itemCount: note.notesList.length,
-                          itemBuilder: (context, i) {
-                            final loadedNoteItem = note.notesList[i];
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(context, Routes.pdfViewer,
-                                    arguments: loadedNoteItem.url);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                height: 50,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(loadedNoteItem.year),
-                                    // SfPdfViewer.network(e.url),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  );
-          }),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: FutureBuilder(
+            future: _loadPDfs(context),
+            builder: (context, snapshot) {
+              return snapshot.connectionState == ConnectionState.waiting
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.grey,
+                      ),
+                    )
+                  : RefreshIndicator(
+                      color: Colors.grey,
+                      onRefresh: () => _loadPDfs(context),
+                      child: Consumer<NotesProvider>(
+                        builder: (context, note, _) {
+                          return GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                                    maxCrossAxisExtent: 180,
+                                    childAspectRatio: 6 / 7,
+                                    crossAxisSpacing: 10,
+                                    mainAxisSpacing: 10),
+                            itemCount: note.notesList.length,
+                            itemBuilder: (context, i) => PdfCard(
+                              note: note.notesList[i],
+                            ),
+                          );
+                        },
+                      ),
+                    );
+            }),
+      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.amber,
         child: Icon(
@@ -176,8 +164,7 @@ class _NotesScreenState extends State<NotesScreen> {
                             });
                           },
                         ),
-                        Text(
-                            "Select a pdf from your device to add to the notes:"),
+                        Text("Select a pdf from your device:"),
                         Container(
                           decoration: BoxDecoration(
                             color: Colors.grey[300],
