@@ -12,7 +12,10 @@ import 'package:share/share.dart';
 class PdfCard extends StatefulWidget {
   final Note note;
   final String userId;
-  PdfCard({required this.note, required this.userId});
+  PdfCard({
+    required this.note,
+    required this.userId,
+  });
 
   @override
   State<PdfCard> createState() => _PdfCardState();
@@ -21,10 +24,23 @@ class PdfCard extends StatefulWidget {
 class _PdfCardState extends State<PdfCard> {
   bool like = false;
   bool isLoading = true;
+
+  void shareMyFile({
+    required String noteUrl,
+    required String fileName,
+  }) async {
+    final url = Uri.parse(noteUrl);
+    final response = await http.get(url);
+    final body = response.bodyBytes;
+    final tempStorage = await getTemporaryDirectory();
+    final path = '${tempStorage.path}/$fileName.pdf';
+    File(path).writeAsBytesSync(body);
+    await Share.shareFiles([path]);
+  }
+
   @override
   void initState() {
     like = widget.note.likes.contains(widget.userId);
-
     super.initState();
   }
 
@@ -39,7 +55,6 @@ class _PdfCardState extends State<PdfCard> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Column(
-                //  / alignment: Alignment.bottomCenter,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
@@ -68,14 +83,14 @@ class _PdfCardState extends State<PdfCard> {
                               onPressed: () {
                                 setState(() {
                                   like = noteProvider.useLikeOrDislike(
-                                      widget.userId, widget.note);
+                                    widget.userId,
+                                    widget.note,
+                                  );
                                 });
-
-                                print("done");
                               },
-                              icon: Icon(like
-                                  ? Icons.favorite
-                                  : Icons.favorite_border),
+                              icon: Icon(
+                                like ? Icons.favorite : Icons.favorite_border,
+                              ),
                               color: Colors.red,
                             ),
                             Text(
@@ -84,18 +99,14 @@ class _PdfCardState extends State<PdfCard> {
                           ],
                         ),
                         IconButton(
-                          onPressed: () async {
+                          onPressed: () {
                             setState(() {
                               isLoading = true;
                             });
-                            final url = Uri.parse(widget.note.url);
-                            final response = await http.get(url);
-                            final body = response.bodyBytes;
-                            final tempStorage = await getTemporaryDirectory();
-                            final path =
-                                '${tempStorage.path}/${widget.note.name}.pdf';
-                            File(path).writeAsBytesSync(body);
-                            await Share.shareFiles([path]);
+                            shareMyFile(
+                              noteUrl: widget.note.url,
+                              fileName: widget.note.name,
+                            );
                             setState(() {
                               isLoading = false;
                             });

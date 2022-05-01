@@ -122,7 +122,7 @@ class NotesProvider with ChangeNotifier {
     final responseData = json.decode(response.body) as Map<String, dynamic>;
 
     if (responseData == null) return;
-    print('Resposne  data for fecth Pdf--->${responseData}');
+    print('Response  data for fetch Pdf--->$responseData');
     final List<Note> noteTempList = [];
     responseData.forEach((id, noteData) {
       noteTempList.add(

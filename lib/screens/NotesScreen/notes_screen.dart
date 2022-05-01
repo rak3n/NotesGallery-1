@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:notes_gallery/models/note.dart';
 import 'package:notes_gallery/provider/noteProvider.dart';
 import 'package:notes_gallery/screens/NotesScreen/widgets/pdfCard.dart';
-import 'package:notes_gallery/utils/constants/routes.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';

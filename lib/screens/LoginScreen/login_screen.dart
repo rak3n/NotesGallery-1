@@ -16,7 +16,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final mailController = TextEditingController();
   final passwordController = TextEditingController();
-  bool isloading = false;
+  bool isLoading = false;
   void showErrorDialog(String message) {
     showDialog(
         context: context,
@@ -101,13 +101,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   Consumer<Authentication>(
                     builder: (context, auth, child) => Container(
                       child: ElevatedButton(
-                        child: isloading ? Indicator() : const Text('Submit'),
+                        child: isLoading ? Indicator() : const Text('Submit'),
                         onPressed: () async {
                           if (!_formKey.currentState!.validate()) {
                             return;
                           }
                           setState(() {
-                            isloading = true;
+                            isLoading = true;
                           });
                           _formKey.currentState!.save();
 
@@ -117,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             showErrorDialog(status ?? "");
                           }
                           setState(() {
-                            isloading = false;
+                            isLoading = false;
                           });
                         },
                       ),
@@ -137,11 +137,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         children: [
                           ElevatedButton(
-                            child: isloading
+                            child: isLoading
                                 ? CircularProgressIndicator()
                                 : const Text('Send data'),
                             onPressed: () async {
-                              print("NO ACTOIN  FCK ME");
+                              print("NO ACTION");
                               // note.addPdfNote(
 
                               // );
