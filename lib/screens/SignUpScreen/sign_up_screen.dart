@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notes_gallery/provider/authProvider.dart';
+import 'package:notes_gallery/widgets/indicator.dart';
 import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -142,9 +143,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Consumer<Authentication>(
                     builder: (context, auth, child) => Container(
                       child: ElevatedButton(
-                        child: isloading
-                            ? CircularProgressIndicator()
-                            : const Text('Submit'),
+                        child: isloading ? Indicator() : const Text('Submit'),
                         onPressed: () async {
                           if (!_formKey.currentState!.validate()) {
                             return;
