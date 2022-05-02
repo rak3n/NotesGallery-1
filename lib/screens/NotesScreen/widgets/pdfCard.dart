@@ -23,7 +23,6 @@ class PdfCard extends StatefulWidget {
 
 class _PdfCardState extends State<PdfCard> {
   bool like = false;
-  bool isLoading = true;
 
   void shareMyFile({
     required String noteUrl,
@@ -46,80 +45,75 @@ class _PdfCardState extends State<PdfCard> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
-        ? Indicator()
-        : Consumer<NotesProvider>(
-            builder: (ctx, noteProvider, _) => Container(
+    return Consumer<NotesProvider>(
+      builder: (ctx, noteProvider, _) => Container(
+        decoration: BoxDecoration(
+          color: Colors.grey.shade200,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 18.0, top: 20),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, Routes.pdfViewer,
+                      arguments: widget.note.url);
+                },
+                icon: Icon(
+                  Icons.picture_as_pdf_outlined,
+                  color: Colors.redAccent,
+                  size: 50,
+                ),
+              ),
+            ),
+            Container(
+              height: 70,
               decoration: BoxDecoration(
-                color: Colors.grey.shade300,
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            like = noteProvider.useLikeOrDislike(
+                              widget.userId,
+                              widget.note,
+                            );
+                          });
+                        },
+                        icon: Icon(
+                          like ? Icons.favorite : Icons.favorite_border,
+                        ),
+                        color: like ? Colors.red : Colors.grey,
+                      ),
+                      Text(
+                        widget.note.likes.length.toString(),
+                      ),
+                    ],
+                  ),
                   IconButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, Routes.pdfViewer,
-                          arguments: widget.note.url);
+                      shareMyFile(
+                        noteUrl: widget.note.url,
+                        fileName: widget.note.name,
+                      );
                     },
-                    icon: Icon(
-                      Icons.picture_as_pdf_outlined,
-                      color: Colors.redAccent,
-                      size: 50,
-                    ),
-                  ),
-                  Container(
-                    height: 70,
-                    decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  like = noteProvider.useLikeOrDislike(
-                                    widget.userId,
-                                    widget.note,
-                                  );
-                                });
-                              },
-                              icon: Icon(
-                                like ? Icons.favorite : Icons.favorite_border,
-                              ),
-                              color: Colors.red,
-                            ),
-                            Text(
-                              widget.note.likes.length.toString(),
-                            ),
-                          ],
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isLoading = true;
-                            });
-                            shareMyFile(
-                              noteUrl: widget.note.url,
-                              fileName: widget.note.name,
-                            );
-                            setState(() {
-                              isLoading = false;
-                            });
-                          },
-                          icon: Icon(Icons.share),
-                          color: Colors.red,
-                        ),
-                      ],
-                    ),
+                    icon: Icon(Icons.share),
+                    color: Colors.grey,
                   ),
                 ],
               ),
             ),
-          );
+          ],
+        ),
+      ),
+    );
   }
 }

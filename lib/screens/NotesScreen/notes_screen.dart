@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:notes_gallery/models/note.dart';
 import 'package:notes_gallery/provider/noteProvider.dart';
 import 'package:notes_gallery/screens/NotesScreen/widgets/pdfCard.dart';
@@ -74,6 +73,7 @@ class _NotesScreenState extends State<NotesScreen> {
     String year = "";
 
     return Scaffold(
+      backgroundColor: Colors.grey.shade300,
       appBar: AppBar(
         title: Text("Your Notes"),
         backgroundColor: Color.fromRGBO(28, 101, 133, 1),
@@ -97,10 +97,11 @@ class _NotesScreenState extends State<NotesScreen> {
                           return GridView.builder(
                             gridDelegate:
                                 const SliverGridDelegateWithMaxCrossAxisExtent(
-                                    maxCrossAxisExtent: 180,
-                                    childAspectRatio: 6 / 7,
-                                    crossAxisSpacing: 10,
-                                    mainAxisSpacing: 10),
+                              maxCrossAxisExtent: 180,
+                              childAspectRatio: 6 / 7,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                            ),
                             itemCount: note.notesList.length,
                             itemBuilder: (context, i) => PdfCard(
                               note: note.notesList[i],
