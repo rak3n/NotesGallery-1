@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:notes_gallery/models/note.dart';
+import 'package:notes_gallery/provider/authProvider.dart';
 import 'package:notes_gallery/provider/noteProvider.dart';
 import 'package:notes_gallery/screens/NotesScreen/widgets/pdfCard.dart';
 import 'package:provider/provider.dart';
@@ -71,7 +72,7 @@ class _NotesScreenState extends State<NotesScreen> {
   Widget build(BuildContext context) {
     String subject = "";
     String year = "";
-
+    final isAdmin = Provider.of<Authentication>(context, listen: true).isAdmin;
     return Scaffold(
       backgroundColor: Colors.grey.shade300,
       appBar: AppBar(
@@ -113,113 +114,117 @@ class _NotesScreenState extends State<NotesScreen> {
                     );
             }),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.amber,
-        child: Icon(
-          Icons.add,
-          color: Colors.black,
-          size: 25,
-        ),
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (ctx) => Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
+      floatingActionButton: isAdmin == false
+          ? null
+          : FloatingActionButton(
+              backgroundColor: Colors.amber,
+              child: Icon(
+                Icons.add,
+                color: Colors.black,
+                size: 25,
               ),
-              child: StatefulBuilder(
-                builder: (context, setState) => AlertDialog(
-                  title: Text("Lets Add Something :)"),
-                  content: SizedBox(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        DropdownButton<String>(
-                          hint: Text(year.isEmpty ? "select a year" : year),
-                          items: <String>['I', 'II', 'III', 'IV']
-                              .map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              year = value ?? "";
-                            });
-                          },
-                        ),
-                        DropdownButton<String>(
-                          hint: Text(
-                              subject.isEmpty ? "select subject" : subject),
-                          items:
-                              <String>['A', 'B', 'C', 'D'].map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              subject = value ?? "";
-                            });
-                          },
-                        ),
-                        Text("Select a pdf from your device:"),
-                        Consumer<NotesProvider>(
-                          builder: (context, note, child) => Container(
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            height: 30,
-                            width: 80,
-                            child: Center(
-                              child: GestureDetector(
-                                onTap: () {
-                                  getPdfAndUpload(Note(
-                                    subject: subject,
-                                    year: year,
-                                    creatorId: note.userId ?? "",
-                                    noteId: "",
-                                    name: "name",
-                                    url: "",
-                                    likes: [],
-                                  ));
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (ctx) => Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: StatefulBuilder(
+                      builder: (context, setState) => AlertDialog(
+                        title: Text("Lets Add Something :)"),
+                        content: SizedBox(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              DropdownButton<String>(
+                                hint:
+                                    Text(year.isEmpty ? "select a year" : year),
+                                items: <String>['I', 'II', 'III', 'IV']
+                                    .map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    year = value ?? "";
+                                  });
                                 },
-                                child: Text(
-                                  "Select a file",
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w500,
+                              ),
+                              DropdownButton<String>(
+                                hint: Text(subject.isEmpty
+                                    ? "select subject"
+                                    : subject),
+                                items: <String>['A', 'B', 'C', 'D']
+                                    .map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    subject = value ?? "";
+                                  });
+                                },
+                              ),
+                              Text("Select a pdf from your device:"),
+                              Consumer<NotesProvider>(
+                                builder: (context, note, child) => Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[300],
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  height: 30,
+                                  width: 80,
+                                  child: Center(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        getPdfAndUpload(Note(
+                                          subject: subject,
+                                          year: year,
+                                          creatorId: note.userId ?? "",
+                                          noteId: "",
+                                          name: "name",
+                                          url: "",
+                                          likes: [],
+                                        ));
+                                      },
+                                      child: Text(
+                                        "Select a file",
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
+                              )
+                            ],
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(
+                                color: Color.fromRGBO(28, 101, 133, 1),
                               ),
                             ),
                           ),
-                        )
-                      ],
-                    ),
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(
-                        "Cancel",
-                        style: TextStyle(
-                          color: Color.fromRGBO(28, 101, 133, 1),
-                        ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             ),
-          );
-        },
-      ),
     );
   }
 }
