@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notes_gallery/models/year_data.dart';
+import 'package:notes_gallery/utils/constants/routes.dart';
 import 'package:notes_gallery/widgets/year_box.dart';
 
 class BoxGridView extends StatelessWidget {
@@ -14,7 +15,7 @@ class BoxGridView extends StatelessWidget {
           .map(
             (i) => InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, '/auth');
+                  Navigator.pushNamed(context, '/semester');
                 },
                 child: YearBox(yearName: i.yr, color: i.color)),
           )

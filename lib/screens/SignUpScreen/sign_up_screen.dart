@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:notes_gallery/provider/authProvider.dart';
 import 'package:notes_gallery/widgets/app_logo_with_name.dart';
@@ -19,7 +17,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final mailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-  bool isloading = false;
+  bool isLoading = false;
   void showErrorDialog(String message) {
     showDialog(
       context: context,
@@ -158,7 +156,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             color: Color.fromRGBO(28, 101, 133, 1),
                           ),
                         ),
-                        child: isloading
+                        child: isLoading
                             ? Center(child: Indicator())
                             : Center(
                                 child: GestureDetector(
@@ -167,18 +165,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       return;
                                     }
                                     setState(() {
-                                      isloading = true;
+                                      isLoading = true;
                                     });
                                     _formKey.currentState!.save();
                                     final status = await auth.signUp(
-                                      "test@gmail.com",
+                                      "sailesh.verma123@jietjodhpur.com",
                                       "123456",
                                     ); //TODO: chnage to ontroller
                                     if (status != "successful") {
                                       showErrorDialog(status ?? "");
                                     }
                                     setState(() {
-                                      isloading = false;
+                                      isLoading = false;
                                     });
                                   },
                                   child: const Text(
