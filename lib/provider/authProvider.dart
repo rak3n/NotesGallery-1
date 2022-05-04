@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:notes_gallery/utils/give_exception.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Authentication with ChangeNotifier {
   String? _token;
@@ -51,7 +52,11 @@ class Authentication with ChangeNotifier {
       print(" User user-> result  ${idTokenResult!.claims!['user_id']}");
       _userId = idTokenResult.claims?['user_id'] ?? "";
       _status = "successful";
+
       notifyListeners();
+
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString('userId', _userId ?? "");
 
       return status;
     } on FirebaseAuthException catch (e) {
@@ -60,6 +65,20 @@ class Authentication with ChangeNotifier {
 
       return status;
     }
+  }
+
+  Future<bool> autoLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey("userId")) {
+      return false;
+    }
+    final uid = prefs.getString("userId");
+    if (uid == "") {
+      return false;
+    }
+    _userId = uid;
+    notifyListeners();
+    return true;
   }
 
   Future<String?> _authenticate(
