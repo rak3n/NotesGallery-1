@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
                   builder: (ctx, snapshot) =>
                       snapshot.connectionState == ConnectionState.waiting
                           ? SplashScreen()
-                          : SignUpScreen(),
+                          : LoginScreen(),
                 ),
           builder: EasyLoading.init(),
           routes: {

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:notes_gallery/provider/authProvider.dart';
+import 'package:notes_gallery/screens/HomePageScreen/widgets/drawer_side.dart';
 import 'package:notes_gallery/widgets/box_gridView.dart';
+import 'package:provider/provider.dart';
 
 class MyHomePage extends StatefulWidget {
   //MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -15,7 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-
+        iconTheme: IconThemeData(color: Colors.grey),
         // toolbarOpacity: 0,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,11 +33,14 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               "A smart way for sharing notes",
               style: TextStyle(
-                  fontSize: 12, color: Color.fromRGBO(169, 170, 183, 1)),
+                fontSize: 12,
+                color: Color.fromRGBO(169, 170, 183, 1),
+              ),
             ),
           ],
         ),
       ),
+      drawer: SideDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(

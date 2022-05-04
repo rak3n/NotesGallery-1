@@ -68,6 +68,7 @@ class Authentication with ChangeNotifier {
   }
 
   Future<bool> autoLogin() async {
+    print("hitssss");
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey("userId")) {
       return false;
@@ -78,7 +79,17 @@ class Authentication with ChangeNotifier {
     }
     _userId = uid;
     notifyListeners();
+    print("yha tk aaya");
     return true;
+  }
+
+  void logout() async {
+    print("hitted");
+    _userId = null;
+    _token = null;
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+    notifyListeners();
   }
 
   Future<String?> _authenticate(
