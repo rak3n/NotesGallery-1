@@ -1,1 +1,6 @@
-const semList = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
+const semList = [
+  'FIRST YEAR',
+  'SECOND YEAR',
+  'THIRD YEAR',
+  'FOURTH YEAR',
+];

@@ -9,28 +9,48 @@ class SemesterScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(28, 101, 133, 1),
-        title: Text("Semester's"),
+        title: Text("Choose Your Year"),
       ),
-      body: ListView(
-        children: semList
-            .map((e) => Column(
-                  children: [
-                    ListTile(
-                      onTap: () {
-                        Navigator.of(context).pushNamed('/notes');
-                      },
-                      title: Text(
-                        e,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView(
+          children: semList
+              .map((e) => Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          gradient: LinearGradient(
+                              colors: [
+                                Color.fromRGBO(28, 101, 133, 1),
+                                Colors.blueGrey
+                              ],
+                              begin: const FractionalOffset(0.0, 0.0),
+                              end: const FractionalOffset(0.9, 0.0),
+                              stops: [0.0, 1.0],
+                              tileMode: TileMode.clamp),
+                        ),
+                        child: ListTile(
+                          onTap: () {
+                            Navigator.of(context).pushNamed('/notes');
+                          },
+                          title: Center(
+                            child: Text(
+                              e,
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    Divider(),
-                  ],
-                ))
-            .toList(),
+                      Divider(),
+                    ],
+                  ))
+              .toList(),
+        ),
       ),
     );
   }
