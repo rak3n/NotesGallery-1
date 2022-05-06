@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:notes_gallery/models/note.dart';
 import 'package:notes_gallery/provider/noteProvider.dart';
 import 'package:notes_gallery/utils/constants/routes.dart';
-import 'package:notes_gallery/widgets/indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
@@ -58,12 +57,27 @@ class _PdfCardState extends State<PdfCard> {
         decoration: BoxDecoration(
           color: Colors.grey.shade200,
           borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: Colors.white,
+            width: 3,
+          ),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Text(
+                "~" + widget.note.subject,
+                style: TextStyle(color: Colors.black54),
+              ),
+            ),
             Padding(
-              padding: const EdgeInsets.only(right: 18.0, top: 20),
+              padding: const EdgeInsets.only(right: 18.0, top: 5),
               child: IconButton(
                 onPressed: () {
                   Navigator.pushNamed(context, Routes.pdfViewer,
@@ -80,7 +94,10 @@ class _PdfCardState extends State<PdfCard> {
               height: 70,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(8),
+                  topRight: Radius.circular(8),
+                ),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -103,6 +120,10 @@ class _PdfCardState extends State<PdfCard> {
                       ),
                       Text(
                         widget.note.likes.length.toString(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black54,
+                        ),
                       ),
                     ],
                   ),
