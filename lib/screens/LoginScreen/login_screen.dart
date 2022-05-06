@@ -160,17 +160,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.pushReplacementNamed(context, '/auth');
                       },
                     ),
-                    Consumer<NotesProvider>(
-                      builder: (context, auth, child) => TextButton(
-                        child: Text(
-                          "upload>",
-                          style: TextStyle(color: Colors.blueGrey),
-                        ),
-                        onPressed: () {
-                          auth.fetchSubjectsLists();
-                        },
-                      ),
-                    ),
                   ],
                 ),
               ),

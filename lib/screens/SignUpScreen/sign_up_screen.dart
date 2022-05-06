@@ -77,10 +77,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       validator: (value) {
-                        // if (!value!.contains("@")) {
-                        //   //TODO: change condition for jietjodhpur
-                        //   return "Pls enter your college mail id";
-                        // }
+                        if (!value!.contains("@jietjodhpur.ac.in")) {
+                          //TODO: change condition for jietjodhpur
+                          return "Pls enter your college mail id";
+                        }
                         return null;
                       },
                     ),
@@ -107,9 +107,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       validator: (value) {
-                        // if (value!.length < 6) {
-                        //   return "Password should be greater than 6 characters";
-                        // }
+                        if (value!.length < 6) {
+                          return "Password should be greater than 6 characters";
+                        }
                         return null;
                       },
                     ),
@@ -136,9 +136,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       validator: (value) {
-                        // if (value != passwordController.text) {
-                        //   return "Both password field must be same";
-                        // }
+                        if (value != passwordController.text) {
+                          return "Both password field must be same";
+                        }
                         return null;
                       },
                     ),
@@ -169,8 +169,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     });
                                     _formKey.currentState!.save();
                                     final status = await auth.signUp(
-                                      "sailesh.verma123@jietjodhpur.com",
-                                      "123456",
+                                      mailController.text,
+                                      confirmPasswordController.text,
                                     ); //TODO: chnage to ontroller
                                     if (status != "successful") {
                                       showErrorDialog(status ?? "");
