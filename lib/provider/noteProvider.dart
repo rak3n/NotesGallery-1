@@ -16,7 +16,7 @@ class NotesProvider with ChangeNotifier {
     required this.token,
     required this.notesList,
   });
-
+  List<String> subjects = [];
   bool useLikeOrDislike(String userId, Note note) {
     if (userId.isEmpty) {
       return false;
@@ -109,6 +109,51 @@ class NotesProvider with ChangeNotifier {
     } catch (e) {
       print(e);
     }
+  }
+
+  Future<void> fetchSubjectsLists() async {
+    final url = Uri.parse(
+        'https://notegallery-f483a-default-rtdb.europe-west1.firebasedatabase.app/subject.json');
+
+    final response = await http.get(url);
+    final responseData = json.decode(response.body) as Map<String, dynamic>;
+    print("my subjects lists ka response data---->   $responseData");
+
+    List<String> subjectsList = [];
+
+    responseData.forEach((key, value) {
+      final listSub = value['subjects'] as List;
+      listSub.forEach((element) {
+        subjectsList.add(element);
+      });
+    });
+
+    subjects = subjectsList;
+    print(subjects);
+    notifyListeners();
+  }
+
+  Future<void> addSubjectsList() async {
+    final url = Uri.parse(
+        'https://notegallery-f483a-default-rtdb.europe-west1.firebasedatabase.app/subject.json');
+    final response = await http.post(
+      url,
+      body: json.encode(
+        {
+          'subjects': [
+            "Maths",
+            "Physics",
+            "TOC",
+            "OOPs",
+            "DSA",
+            "Communication Skills",
+            "OS",
+            "CG",
+            "CD",
+          ],
+        },
+      ),
+    );
   }
 
   Future<void> fetchNotes([bool filterByCreatorId = false]) async {

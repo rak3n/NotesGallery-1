@@ -69,6 +69,12 @@ class _NotesScreenState extends State<NotesScreen> {
   }
 
   @override
+  void initState() {
+    Provider.of<NotesProvider>(context, listen: false).fetchSubjectsLists();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     String subject = "";
     String year = "";
@@ -153,22 +159,24 @@ class _NotesScreenState extends State<NotesScreen> {
                                   });
                                 },
                               ),
-                              DropdownButton<String>(
-                                hint: Text(subject.isEmpty
-                                    ? "select subject"
-                                    : subject),
-                                items: <String>['A', 'B', 'C', 'D']
-                                    .map((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    subject = value ?? "";
-                                  });
-                                },
+                              Consumer<NotesProvider>(
+                                builder: (context, note, child) =>
+                                    DropdownButton<String>(
+                                  hint: Text(subject.isEmpty
+                                      ? "select subject"
+                                      : subject),
+                                  items: note.subjects.map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      subject = value ?? "";
+                                    });
+                                  },
+                                ),
                               ),
                               Text("Select a pdf from your device:"),
                               Consumer<NotesProvider>(

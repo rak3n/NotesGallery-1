@@ -12,9 +12,11 @@ import 'package:share/share.dart';
 class PdfCard extends StatefulWidget {
   final Note note;
   final String userId;
+  bool isloading;
   PdfCard({
     required this.note,
     required this.userId,
+    this.isloading = false,
   });
 
   @override
@@ -28,6 +30,9 @@ class _PdfCardState extends State<PdfCard> {
     required String noteUrl,
     required String fileName,
   }) async {
+    setState(() {
+      widget.isloading = true;
+    });
     final url = Uri.parse(noteUrl);
     final response = await http.get(url);
     final body = response.bodyBytes;
@@ -35,6 +40,9 @@ class _PdfCardState extends State<PdfCard> {
     final path = '${tempStorage.path}/$fileName.pdf';
     File(path).writeAsBytesSync(body);
     await Share.shareFiles([path]);
+    setState(() {
+      widget.isloading = false;
+    });
   }
 
   @override
@@ -98,16 +106,25 @@ class _PdfCardState extends State<PdfCard> {
                       ),
                     ],
                   ),
-                  IconButton(
-                    onPressed: () {
-                      shareMyFile(
-                        noteUrl: widget.note.url,
-                        fileName: widget.note.name,
-                      );
-                    },
-                    icon: Icon(Icons.share),
-                    color: Colors.grey,
-                  ),
+                  widget.isloading
+                      ? SizedBox(
+                          height: 25,
+                          width: 25,
+                          child: CircularProgressIndicator(
+                            color: Colors.grey.shade400,
+                            strokeWidth: 0.8,
+                          ),
+                        )
+                      : IconButton(
+                          onPressed: () {
+                            shareMyFile(
+                              noteUrl: widget.note.url,
+                              fileName: widget.note.name,
+                            );
+                          },
+                          icon: Icon(Icons.share),
+                          color: Colors.grey,
+                        ),
                 ],
               ),
             ),
