@@ -1,9 +1,12 @@
+import 'package:notes_gallery/models/commentModel.dart';
+import 'package:notes_gallery/models/userModel.dart';
+
 class Feed {
   final String feedId;
   final String feedText;
   final String date;
-  final Object postedBy;
-  final List<dynamic> commentList;
+  final UserModel postedBy;
+  final List<Comment> commentList;
   Feed({
     required this.feedId,
     required this.feedText,

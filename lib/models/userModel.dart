@@ -7,4 +7,14 @@ class UserModel {
     required this.displayName,
     required this.isStudent,
   });
+
+  factory UserModel.fromJson({
+    required Map<String, dynamic> json,
+  }) {
+    return UserModel(
+      uid: json['uid'],
+      displayName: json['displayName'],
+      isStudent: json['isStudent'],
+    );
+  }
 }

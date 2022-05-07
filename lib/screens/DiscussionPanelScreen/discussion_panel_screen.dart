@@ -15,7 +15,7 @@ class DiscussionPanelScreen extends StatelessWidget {
           child: TextButton(
             onPressed: () {
               Provider.of<DiscussionProvider>(context, listen: false)
-                  .postComment("", "");
+                  .fetchFeeds();
             },
             child: Text("USE ME"),
           ),
