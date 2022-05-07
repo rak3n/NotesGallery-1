@@ -28,7 +28,6 @@ class YearBox extends StatelessWidget {
           Opacity(
             opacity: 0.3,
             child: Container(
-              height: null,
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(9),

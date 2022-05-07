@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:notes_gallery/provider/authProvider.dart';
 import 'package:notes_gallery/screens/HomePageScreen/widgets/drawer_side.dart';
 import 'package:notes_gallery/widgets/box_gridView.dart';
-import 'package:provider/provider.dart';
 
 class MyHomePage extends StatefulWidget {
   //MyHomePage({Key? key, required this.title}) : super(key: key);

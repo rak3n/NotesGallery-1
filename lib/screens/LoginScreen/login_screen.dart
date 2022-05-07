@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:notes_gallery/provider/authProvider.dart';
-import 'package:notes_gallery/provider/noteProvider.dart';
 import 'package:notes_gallery/widgets/app_logo_with_name.dart';
 import 'package:notes_gallery/widgets/indicator.dart';
 import 'package:provider/provider.dart';

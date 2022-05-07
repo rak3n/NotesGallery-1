@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
 
+// ignore: must_be_immutable
 class PdfCard extends StatefulWidget {
   final Note note;
   final String userId;
