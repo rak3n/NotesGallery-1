@@ -32,7 +32,9 @@ class DiscussionProvider with ChangeNotifier {
         feedText: feed['feedText'],
         date: feed["date"],
         commentList: comments,
-        postedBy: UserModel.fromJson(json: feed["postedBy"]),
+        postedBy: UserModel.fromJson(
+          json: feed["postedBy"],
+        ),
       );
 
       tempFeedList.add(feedItem);
