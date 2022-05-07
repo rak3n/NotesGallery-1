@@ -105,8 +105,20 @@ class DiscussionProvider with ChangeNotifier {
         },
       ),
     );
+    print("RESPONSE OF Commments addition FEED  --->${resposne.body}");
 
-    print("RESPONSE OF POST FEED  --->${resposne.body}");
+    final responseData = json.decode(resposne.body);
+
+    final feed = feedList.firstWhere((element) => element.feedId == feedId);
+    feed.commentList.add(
+      Comment(
+        commentId: responseData['result']['commentId'],
+        feedId: feedId,
+        commentText: commentText,
+        date: DateTime.now().toIso8601String(),
+        userInfo: userInfo,
+      ),
+    );
     notifyListeners();
   }
 }

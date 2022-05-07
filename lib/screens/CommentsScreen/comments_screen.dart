@@ -16,8 +16,9 @@ class CommentsScreen extends StatefulWidget {
 }
 
 class _CommentsScreenState extends State<CommentsScreen> {
-  @override
   final commentController = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
     final String feedId = ModalRoute.of(context)?.settings.arguments as String;
     var feed = Provider.of<DiscussionProvider>(context, listen: true)
@@ -66,24 +67,22 @@ class _CommentsScreenState extends State<CommentsScreen> {
                         style: ElevatedButton.styleFrom(
                           primary: Colors.blueGrey,
                         ),
-                        onPressed: commentController.text.isEmpty
-                            ? null
-                            : () {
-                                Provider.of<DiscussionProvider>(context,
-                                        listen: true)
-                                    .postComment(
-                                  feedId: feedId,
-                                  userInfo: UserModel(
-                                    uid: "uid",
-                                    displayName: "displayName",
-                                    isStudent: true,
-                                  ),
-                                  commentText: commentController.text,
-                                );
+                        onPressed: () {
+                          Provider.of<DiscussionProvider>(context,
+                                  listen: false)
+                              .postComment(
+                            feedId: feedId,
+                            userInfo: UserModel(
+                              uid: "uid",
+                              displayName: "displayName",
+                              isStudent: true,
+                            ),
+                            commentText: commentController.text,
+                          );
 
-                                Navigator.of(context).pop();
-                                commentController.clear();
-                              },
+                          Navigator.of(context).pop();
+                          commentController.clear();
+                        },
                         child: Text(
                           "Go",
                           style: TextStyle(

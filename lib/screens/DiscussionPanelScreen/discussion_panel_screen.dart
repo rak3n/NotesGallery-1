@@ -29,10 +29,6 @@ class _DiscussionPanelScreenState extends State<DiscussionPanelScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      // appBar: AppBar(
-      //   title: Text("Let's Discuss"),
-      //   backgroundColor: Color.fromRGBO(28, 101, 133, 1),
-      // ),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -119,23 +115,20 @@ class _DiscussionPanelScreenState extends State<DiscussionPanelScreen> {
                     style: ElevatedButton.styleFrom(
                       primary: Colors.blueGrey,
                     ),
-                    onPressed: feedTextController.text.isEmpty
-                        ? null
-                        : () {
-                            Provider.of<DiscussionProvider>(context,
-                                    listen: false)
-                                .postFeed(
-                              UserModel(
-                                uid: "uid",
-                                displayName: "displayName",
-                                isStudent: true,
-                              ),
-                              feedTextController.text,
-                            );
+                    onPressed: () {
+                      Provider.of<DiscussionProvider>(context, listen: false)
+                          .postFeed(
+                        UserModel(
+                          uid: "uid",
+                          displayName: "displayName",
+                          isStudent: true,
+                        ),
+                        feedTextController.text,
+                      );
 
-                            Navigator.of(context).pop();
-                            feedTextController.clear();
-                          },
+                      Navigator.of(context).pop();
+                      feedTextController.clear();
+                    },
                     child: Text(
                       "POST",
                       style: TextStyle(
