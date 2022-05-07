@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_gallery/provider/discussionProvider.dart';
+import 'package:notes_gallery/screens/CommentsScreen/comments_screen.dart';
 import 'package:notes_gallery/screens/DiscussionPanelScreen/discussion_panel_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
             LoginScreen.routName: (ctx) => LoginScreen(),
             SignUpScreen.routName: (ctx) => SignUpScreen(),
             PdfScreen.routeName: (ctx) => PdfScreen(),
+            CommentsScreen.routeName: (ctx) => CommentsScreen(),
           },
         ),
       ),
