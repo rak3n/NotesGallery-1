@@ -102,8 +102,9 @@ class NotesProvider with ChangeNotifier {
             'creatorId': note.creatorId,
             'name': note.name,
             'noteId': note.noteId,
-            'likes': note.likes,
+            'likes': [],
             'url': note.url,
+            'branch': note.branch,
           }));
       print("RESPONSE BODY->${response.body}");
     } catch (e) {
@@ -165,41 +166,48 @@ class NotesProvider with ChangeNotifier {
         filterByCreatorId ? 'orderBy="creatorId"&equalTo="$userId"' : "";
     final url = Uri.parse(
         'https://notegallery-f483a-default-rtdb.europe-west1.firebasedatabase.app/note.json?$filterString');
+    try {
+      final response = await http.get(url);
 
-    final response = await http.get(url);
+      final responseData = json.decode(response.body) as Map<String, dynamic>;
 
-    final responseData = json.decode(response.body) as Map<String, dynamic>;
+      if (responseData == null) return;
+      print('Response  data for fetch Pdf--->$responseData');
+      final List<Note> noteTempList = [];
+      responseData.forEach(
+        (id, noteData) {
+          noteTempList.add(
+            Note(
+              year: noteData['year'],
+              subject: noteData['subject'],
+              creatorId: 'creatorId',
+              noteId: id,
+              name: noteData['name'],
+              branch: noteData['branch'],
+              url: noteData['url'],
+              likes: noteData['likes'] == null
+                  ? []
+                  : noteData['likes'] as List, //TODO: change here:
+            ),
+          );
+        },
+      );
 
-    if (responseData == null) return;
-    print('Response  data for fetch Pdf--->$responseData');
-    final List<Note> noteTempList = [];
-    responseData.forEach(
-      (id, noteData) {
-        noteTempList.add(
-          Note(
-            year: noteData['year'],
-            subject: noteData['subject'],
-            creatorId: 'creatorId',
-            noteId: id,
-            name: noteData['name'],
-            branch: noteData['branch'],
-            url: noteData['url'],
-            likes: noteData['likes'] == null
-                ? []
-                : noteData['likes'] as List, //TODO: change here:
-          ),
-        );
-      },
-    );
-//TODO: change according to branch and year;
-    if (filterByBranchAndYear) {
-      notesList = noteTempList
-          .where((element) => element.branch == branch && element.year == year)
-          .toList();
-    } else
-      notesList = noteTempList;
+      if (filterByBranchAndYear) {
+        print("jcasjsvnnsviknvsvnsvsvsvs");
+        print(noteTempList[0].branch);
+        notesList = noteTempList
+            .where(
+                (element) => element.branch == branch && element.year == year)
+            .toList();
+      } else {
+        notesList = noteTempList;
+      }
+    } catch (e) {
+      print(e);
+    }
 
-    print(" fetchNotes response->     ${json.decode(response.body)}");
+    print('MY DTA A LIST ------..DDVDVDV/....>>   $notesList');
     print(notesList.length);
     notifyListeners();
   }

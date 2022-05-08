@@ -68,7 +68,8 @@ class _NotesScreenState extends State<NotesScreen> {
 
   Future<void> _loadPDfs(BuildContext context) async {
     final argumentsMap = ModalRoute.of(context)!.settings.arguments as Map;
-
+    print(argumentsMap['branch']);
+    print(argumentsMap['year']);
     await Provider.of<NotesProvider>(context, listen: false).fetchNotes(
       filterByBranchAndYear: true,
       branch: argumentsMap['branch'],
@@ -171,7 +172,7 @@ class _NotesScreenState extends State<NotesScreen> {
                                 }).toList(),
                                 onChanged: (value) {
                                   setState(() {
-                                    year = value ?? "";
+                                    branch = value ?? "";
                                   });
                                 },
                               ),
@@ -229,7 +230,7 @@ class _NotesScreenState extends State<NotesScreen> {
                                             noteId: "",
                                             name: "name", //TODO: change here
                                             url: "",
-                                            branch: "aaa", //TODO change here
+                                            branch: branch, //TODO change here
 
                                             likes: [],
                                           ),
