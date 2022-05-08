@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:notes_gallery/models/userModel.dart';
 import 'package:notes_gallery/utils/give_exception.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,6 +12,12 @@ class Authentication with ChangeNotifier {
   DateTime? _expiryDate;
   String _status = '';
   bool? _isAdmin;
+  String? _name;
+  UserModel? _currentUser;
+
+  UserModel? get currentUser {
+    return _currentUser;
+  }
 
   bool get isAuth {
     return token != null;
@@ -18,6 +25,10 @@ class Authentication with ChangeNotifier {
 
   bool? get isAdmin {
     return _isAdmin;
+  }
+
+  String? get name {
+    return _name;
   }
 
   String? get token {
@@ -50,13 +61,25 @@ class Authentication with ChangeNotifier {
       print(" USER user detail-:  ${user.user}");
       IdTokenResult? idTokenResult = await user.user?.getIdTokenResult(true);
       print(" User user-> result  ${idTokenResult!.claims!['user_id']}");
-      _userId = idTokenResult.claims?['user_id'] ?? "";
-      _status = "successful";
+      print("@@@@@@@@@@@@@@@@@@@--->${idTokenResult.claims}");
 
-      notifyListeners();
+      _userId = idTokenResult.claims?['user_id'];
+      _name = idTokenResult.claims?['displayName'];
+      _isAdmin = idTokenResult.claims?['isAdmin'];
+      print(_name);
+      _status = "successful";
+      _currentUser = UserModel(
+        uid: _userId ?? '',
+        displayName: _name ?? "",
+        isStudent: !(_isAdmin ?? false),
+      );
 
       final prefs = await SharedPreferences.getInstance();
       prefs.setString('userId', _userId ?? "");
+      print("prefs setted >>>>>");
+      print(currentUser?.displayName ?? "");
+
+      notifyListeners();
 
       return status;
     } on FirebaseAuthException catch (e) {
@@ -68,7 +91,6 @@ class Authentication with ChangeNotifier {
   }
 
   Future<bool> autoLogin() async {
-    print("hitssss");
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey("userId")) {
       return false;
@@ -78,8 +100,8 @@ class Authentication with ChangeNotifier {
       return false;
     }
     _userId = uid;
+    print("AUTO LOGIN BLOC ---->     ${_userId}");
     notifyListeners();
-    print("yha tk aaya");
     return true;
   }
 
@@ -93,7 +115,7 @@ class Authentication with ChangeNotifier {
   }
 
   Future<String?> _authenticate(
-      String email, String password, String urlSegment) async {
+      String email, String password, String name) async {
     String? url = 'https://protected-waters-32301.herokuapp.com/signup';
 
     final checkAdminUrl =
@@ -123,6 +145,7 @@ class Authentication with ChangeNotifier {
             'email': email,
             'password': password,
             'isAdmin': isAdmin,
+            'displayName': name,
           },
         ),
         encoding: Encoding.getByName('utf-8'),
@@ -143,7 +166,8 @@ class Authentication with ChangeNotifier {
     }
   }
 
-  Future<String?> signUp(String? email, String? password) async {
-    return _authenticate(email!, password!, 'signUp');
+  Future<String?> signUp(
+      String? email, String? password, String? userName) async {
+    return _authenticate(email!, password!, userName!);
   }
 }

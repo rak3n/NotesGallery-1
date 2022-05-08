@@ -134,6 +134,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     setState(() {
                                       isLoading = false;
                                     });
+                                    Navigator.pushReplacementNamed(
+                                        context, '/home');
                                   },
                                   child: const Text(
                                     'Login',

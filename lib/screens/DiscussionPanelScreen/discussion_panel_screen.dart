@@ -3,9 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:notes_gallery/models/feedModel.dart';
 import 'package:notes_gallery/models/userModel.dart';
+import 'package:notes_gallery/provider/authProvider.dart';
 import 'package:notes_gallery/provider/discussionProvider.dart';
 import 'package:notes_gallery/screens/DiscussionPanelScreen/widgets/feed_tile.dart';
-import 'package:notes_gallery/screens/DiscussionPanelScreen/widgets/helper_function.dart';
 import 'package:provider/provider.dart';
 
 class DiscussionPanelScreen extends StatefulWidget {
@@ -111,28 +111,31 @@ class _DiscussionPanelScreenState extends State<DiscussionPanelScreen> {
                   ),
                 ),
                 actions: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blueGrey,
-                    ),
-                    onPressed: () {
-                      Provider.of<DiscussionProvider>(context, listen: false)
-                          .postFeed(
-                        UserModel(
-                          uid: "uid",
-                          displayName: "displayName",
-                          isStudent: true,
-                        ),
-                        feedTextController.text,
-                      );
+                  Consumer<Authentication>(
+                    builder: (ctx, auth, _) => ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blueGrey,
+                      ),
+                      onPressed: () {
+                        Provider.of<DiscussionProvider>(context, listen: false)
+                            .postFeed(
+                          currentUser: auth.currentUser ??
+                              UserModel(
+                                uid: "",
+                                displayName: "",
+                                isStudent: true,
+                              ),
+                          feedText: feedTextController.text,
+                        );
 
-                      Navigator.of(context).pop();
-                      feedTextController.clear();
-                    },
-                    child: Text(
-                      "POST",
-                      style: TextStyle(
-                        color: Colors.white,
+                        Navigator.of(context).pop();
+                        feedTextController.clear();
+                      },
+                      child: Text(
+                        "POST",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   )

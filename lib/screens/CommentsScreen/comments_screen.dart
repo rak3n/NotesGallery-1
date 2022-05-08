@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:notes_gallery/models/commentModel.dart';
-import 'package:notes_gallery/models/feedModel.dart';
 import 'package:notes_gallery/models/userModel.dart';
+import 'package:notes_gallery/provider/authProvider.dart';
 import 'package:notes_gallery/provider/discussionProvider.dart';
 import 'package:notes_gallery/screens/CommentsScreen/widgets/commentTile.dart';
 import 'package:notes_gallery/screens/DiscussionPanelScreen/widgets/helper_function.dart';
@@ -63,30 +62,35 @@ class _CommentsScreenState extends State<CommentsScreen> {
                       ),
                     ),
                     actions: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.blueGrey,
-                        ),
-                        onPressed: () {
-                          Provider.of<DiscussionProvider>(context,
-                                  listen: false)
-                              .postComment(
-                            feedId: feedId,
-                            userInfo: UserModel(
-                              uid: "uid",
-                              displayName: "displayName",
-                              isStudent: true,
-                            ),
-                            commentText: commentController.text,
-                          );
+                      Consumer<Authentication>(
+                        builder: (context, auth, child) => ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.blueGrey,
+                          ),
+                          onPressed: () {
+                            print(auth.currentUser?.displayName ??
+                                "nakcnkacnaka&&&7");
+                            Provider.of<DiscussionProvider>(context,
+                                    listen: false)
+                                .postComment(
+                              currentUser: auth.currentUser ??
+                                  UserModel(
+                                    uid: "",
+                                    displayName: "",
+                                    isStudent: true,
+                                  ),
+                              feedId: feedId,
+                              commentText: commentController.text,
+                            );
 
-                          Navigator.of(context).pop();
-                          commentController.clear();
-                        },
-                        child: Text(
-                          "Go",
-                          style: TextStyle(
-                            color: Colors.white,
+                            Navigator.of(context).pop();
+                            commentController.clear();
+                          },
+                          child: Text(
+                            "Go",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       )

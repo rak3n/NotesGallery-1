@@ -112,20 +112,30 @@ class _NotesScreenState extends State<NotesScreen> {
                       onRefresh: () => _loadPDfs(context),
                       child: Consumer<NotesProvider>(
                         builder: (context, note, _) {
-                          return GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithMaxCrossAxisExtent(
-                              maxCrossAxisExtent: 180,
-                              childAspectRatio: 6 / 7,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                            ),
-                            itemCount: note.notesList.length,
-                            itemBuilder: (context, i) => PdfCard(
-                              note: note.notesList[i],
-                              userId: note.userId ?? "",
-                            ),
-                          );
+                          return note.notesList.isEmpty
+                              ? Center(
+                                  child: Text(
+                                    "Nothing to display!",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                )
+                              : GridView.builder(
+                                  gridDelegate:
+                                      const SliverGridDelegateWithMaxCrossAxisExtent(
+                                    maxCrossAxisExtent: 180,
+                                    childAspectRatio: 6 / 7,
+                                    crossAxisSpacing: 10,
+                                    mainAxisSpacing: 10,
+                                  ),
+                                  itemCount: note.notesList.length,
+                                  itemBuilder: (context, i) => PdfCard(
+                                    note: note.notesList[i],
+                                    userId: note.userId ?? "",
+                                  ),
+                                );
                         },
                       ),
                     );

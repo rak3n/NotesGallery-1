@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:notes_gallery/provider/authProvider.dart';
 import 'package:notes_gallery/screens/HomePageScreen/widgets/drawer_side.dart';
 import 'package:notes_gallery/widgets/box_gridView.dart';
+import 'package:provider/provider.dart';
 
 class MyHomePage extends StatefulWidget {
   //MyHomePage({Key? key, required this.title}) : super(key: key);
+  static const routName = '/home';
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -37,6 +40,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: Consumer<Authentication>(
+        builder: (context, auth, child) => FloatingActionButton(onPressed: () {
+          print(auth.currentUser?.displayName ?? "9999999999999");
+          Navigator.pushNamed(context, '/discussion');
+        }),
       ),
       drawer: SideDrawer(),
       body: Padding(

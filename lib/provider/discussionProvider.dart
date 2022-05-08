@@ -45,7 +45,8 @@ class DiscussionProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> postFeed(UserModel userInfo, String feedText) async {
+  Future<void> postFeed(
+      {required UserModel currentUser, required String feedText}) async {
     final url =
         Uri.parse("http://protected-waters-32301.herokuapp.com/postFeed");
 
@@ -58,9 +59,9 @@ class DiscussionProvider with ChangeNotifier {
         {
           'feedText': feedText,
           'userInfo': {
-            'uid': userInfo.uid,
-            'displayName': userInfo.displayName,
-            'isStudent': userInfo.isStudent,
+            'uid': currentUser.uid,
+            'displayName': currentUser.displayName,
+            'isStudent': currentUser.isStudent,
           }
         },
       ),
@@ -73,7 +74,7 @@ class DiscussionProvider with ChangeNotifier {
         feedText: feedText,
         date: DateTime.now().toIso8601String(),
         commentList: [],
-        postedBy: userInfo,
+        postedBy: currentUser,
       ),
     );
     notifyListeners();
@@ -82,12 +83,12 @@ class DiscussionProvider with ChangeNotifier {
 
   Future<void> postComment({
     required String feedId,
-    required UserModel userInfo,
     required String commentText,
+    required UserModel currentUser,
   }) async {
     final url =
         Uri.parse("http://protected-waters-32301.herokuapp.com/postComment");
-
+    print("post comment me jaake user details  ${currentUser.displayName} ");
     final resposne = await http.post(
       url,
       headers: <String, String>{
@@ -98,9 +99,9 @@ class DiscussionProvider with ChangeNotifier {
           'feedId': feedId,
           'commentText': commentText,
           'userInfo': {
-            'uid': userInfo.uid,
-            'displayName': userInfo.displayName,
-            'isStudent': userInfo.isStudent,
+            'uid': currentUser.uid,
+            'displayName': currentUser.displayName,
+            'isStudent': currentUser.isStudent,
           }
         },
       ),
@@ -116,7 +117,7 @@ class DiscussionProvider with ChangeNotifier {
         feedId: feedId,
         commentText: commentText,
         date: DateTime.now().toIso8601String(),
-        userInfo: userInfo,
+        userInfo: currentUser,
       ),
     );
     notifyListeners();

@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:notes_gallery/models/userModel.dart';
 import 'package:notes_gallery/provider/discussionProvider.dart';
 import 'package:notes_gallery/screens/CommentsScreen/comments_screen.dart';
 import 'package:notes_gallery/screens/DiscussionPanelScreen/discussion_panel_screen.dart';
@@ -29,9 +30,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: Authentication(),
         ),
-        ChangeNotifierProvider.value(
-          value: DiscussionProvider(),
-        ),
         ChangeNotifierProxyProvider<Authentication, NotesProvider>(
           create: (_) => NotesProvider(userId: '', token: '', notesList: []),
           update: (context, auth, value) => NotesProvider(
@@ -39,6 +37,9 @@ class MyApp extends StatelessWidget {
             token: auth.token,
             notesList: value?.notesList ?? [],
           ),
+        ),
+        ChangeNotifierProvider.value(
+          value: DiscussionProvider(),
         ),
       ],
       child: Consumer<Authentication>(
@@ -57,8 +58,9 @@ class MyApp extends StatelessWidget {
                           ? SplashScreen()
                           : LoginScreen(),
                 ),
-          builder: EasyLoading.init(),
+          //builder: EasyLoading.init(),
           routes: {
+            MyHomePage.routName: (ctx) => MyHomePage(),
             DiscussionPanelScreen.routeName: (ctx) => DiscussionPanelScreen(),
             SemesterScreen.routName: (ctx) => SemesterScreen(),
             NotesScreen.routName: (ctx) => NotesScreen(),

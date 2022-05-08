@@ -17,6 +17,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final mailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  final nameController = TextEditingController();
   bool isLoading = false;
   void showErrorDialog(String message) {
     showDialog(
@@ -58,6 +59,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       height: 40,
                     ),
                     TextFormField(
+                      controller: nameController,
+                      decoration: InputDecoration(
+                        labelText: "Your Name",
+                        border: OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(25.0),
+                          borderSide: new BorderSide(),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(25.0),
+                          borderSide: new BorderSide(),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(25.0),
+                          borderSide: new BorderSide(
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value!.length < 2) {
+                          //TODO: change condition for jietjodhpur
+                          return "Name must contains more than 3 characters";
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    TextFormField(
                       controller: mailController,
                       decoration: InputDecoration(
                         labelText: "Email",
@@ -85,7 +116,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       },
                     ),
                     SizedBox(
-                      height: 40,
+                      height: 30,
                     ),
                     TextFormField(
                       controller: passwordController,
@@ -114,7 +145,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       },
                     ),
                     SizedBox(
-                      height: 40,
+                      height: 30,
                     ),
                     TextFormField(
                       controller: confirmPasswordController,
@@ -171,13 +202,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     final status = await auth.signUp(
                                       mailController.text,
                                       confirmPasswordController.text,
+                                      nameController.text,
+
+                                      // 'test123@jietjodhpur.ac.in',
+                                      // '123456',
+                                      // 'sailu',
                                     ); //TODO: chnage to ontroller
-                                    if (status != "successful") {
-                                      showErrorDialog(status ?? "");
-                                    }
                                     setState(() {
                                       isLoading = false;
                                     });
+                                    if (status != "successful") {
+                                      showErrorDialog(status ?? "");
+                                    }
                                   },
                                   child: const Text(
                                     "Let's Go",
@@ -192,7 +228,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: 40,
+                      height: 30,
                     ),
                     TextButton(
                       child: Text(

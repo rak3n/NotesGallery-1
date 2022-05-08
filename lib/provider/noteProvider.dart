@@ -11,6 +11,7 @@ class NotesProvider with ChangeNotifier {
   List<Note> notesList = [];
   final String? userId;
   final String? token;
+
   NotesProvider({
     required this.userId,
     required this.token,

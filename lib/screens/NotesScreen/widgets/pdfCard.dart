@@ -141,7 +141,7 @@ class _PdfCardState extends State<PdfCard> {
                           onPressed: () {
                             shareMyFile(
                               noteUrl: widget.note.url,
-                              fileName: widget.note.name,
+                              fileName: widget.note.subject,
                             );
                           },
                           icon: Icon(Icons.share),
