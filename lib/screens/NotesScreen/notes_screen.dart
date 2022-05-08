@@ -161,8 +161,9 @@ class _NotesScreenState extends State<NotesScreen> {
                       builder: (context, setState) => AlertDialog(
                         title: Text("Lets Add Something :)"),
                         content: SizedBox(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                          height: 300,
+                          child: ListView(
+                            // /  mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               DropdownButton<String>(
                                 hint: Text(branch.isEmpty
@@ -220,7 +221,19 @@ class _NotesScreenState extends State<NotesScreen> {
                                   },
                                 ),
                               ),
-                              Text("Select a pdf from your device:"),
+                              SizedBox(
+                                height: 28,
+                              ),
+                              Text(
+                                "Select a pdf from your device:",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black45,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
                               Consumer<NotesProvider>(
                                 builder: (context, note, child) => Container(
                                   decoration: BoxDecoration(
@@ -247,7 +260,7 @@ class _NotesScreenState extends State<NotesScreen> {
                                         );
                                       },
                                       child: Text(
-                                        "Select a file",
+                                        "click here",
                                         style: TextStyle(
                                           fontSize: 11,
                                           fontWeight: FontWeight.w500,

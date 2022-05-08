@@ -66,12 +66,12 @@ class Authentication with ChangeNotifier {
       _userId = idTokenResult.claims?['user_id'];
       _name = idTokenResult.claims?['displayName'];
       _isAdmin = idTokenResult.claims?['isAdmin'];
-      print(_name);
+      print(" ADMIN CHECK IN LOGIN--->  $_isAdmin");
       _status = "successful";
       _currentUser = UserModel(
         uid: _userId ?? '',
         displayName: _name ?? "",
-        isStudent: !(_isAdmin ?? false),
+        isStudent: _isAdmin ?? false,
       );
 
       final prefs = await SharedPreferences.getInstance();
@@ -157,6 +157,7 @@ class Authentication with ChangeNotifier {
       );
       final adminResponse = json.decode(isAdminResponse.body);
       _isAdmin = adminResponse['idAdmin'];
+      print("^^^^^^^&&&&&&&&&&&&&&&${_isAdmin}");
       notifyListeners();
       final response = await http.post(
         Uri.parse(url),
