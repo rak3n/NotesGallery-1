@@ -47,15 +47,15 @@ class _NotesScreenState extends State<NotesScreen> {
         final provider = Provider.of<NotesProvider>(context, listen: false);
         await provider.addPdfNote(
           Note(
-              subject: note.subject,
-              year: note.year,
-              creatorId: note.creatorId,
-              noteId: note.noteId,
-              name: note.name,
-              url: downloadUrl,
-              likes: note.likes,
-              branch: "ruk abi" //TODO: change gere;
-              ),
+            subject: note.subject,
+            year: note.year,
+            creatorId: note.creatorId,
+            noteId: note.noteId,
+            name: note.name,
+            url: downloadUrl,
+            likes: note.likes,
+            branch: note.branch, //TODO: change gere;
+          ),
         );
         Navigator.pop(context);
         EasyLoading.dismiss();
@@ -67,7 +67,13 @@ class _NotesScreenState extends State<NotesScreen> {
   }
 
   Future<void> _loadPDfs(BuildContext context) async {
-    await Provider.of<NotesProvider>(context, listen: false).fetchNotes();
+    final argumentsMap = ModalRoute.of(context)!.settings.arguments as Map;
+
+    await Provider.of<NotesProvider>(context, listen: false).fetchNotes(
+      filterByBranchAndYear: true,
+      branch: argumentsMap['branch'],
+      year: argumentsMap['year'],
+    );
   }
 
   @override
@@ -76,6 +82,7 @@ class _NotesScreenState extends State<NotesScreen> {
     super.initState();
   }
 
+//TODO: take routes hhere
   @override
   Widget build(BuildContext context) {
     String subject = "";

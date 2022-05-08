@@ -156,7 +156,11 @@ class NotesProvider with ChangeNotifier {
     );
   }
 
-  Future<void> fetchNotes([bool filterByCreatorId = false]) async {
+  Future<void> fetchNotes(
+      {bool filterByCreatorId = false,
+      String? branch,
+      String? year,
+      required bool filterByBranchAndYear}) async {
     String filterString =
         filterByCreatorId ? 'orderBy="creatorId"&equalTo="$userId"' : "";
     final url = Uri.parse(
@@ -188,10 +192,22 @@ class NotesProvider with ChangeNotifier {
       },
     );
 //TODO: change according to branch and year;
-    notesList = noteTempList;
+    if (filterByBranchAndYear) {
+      notesList = noteTempList
+          .where((element) => element.branch == branch && element.year == year)
+          .toList();
+    } else
+      notesList = noteTempList;
 
     print(" fetchNotes response->     ${json.decode(response.body)}");
     print(notesList.length);
     notifyListeners();
   }
+
+// void filterByBranchAndYear({ required String branch,required String year}){
+//  notesList
+//           .where((element) => element.branch == branch && element.year == year)
+//           .toList();
+// }
+
 }
