@@ -30,9 +30,9 @@ class FeedTile extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.only(
-                  left: 8.0,
-                  right: 8.0,
-                  top: 8.0,
+                  left: 12.0,
+                  right: 12.0,
+                  top: 16.0,
                 ),
                 child: Row(
                   children: [
@@ -51,14 +51,35 @@ class FeedTile extends StatelessWidget {
                     SizedBox(
                       width: 5,
                     ),
-                    Text(
-                      feed.postedBy.displayName,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.grey.shade700,
-                      ),
-                    ),
+                    Padding(
+                        padding: EdgeInsets.only(
+                          left: 8.0,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              feed.postedBy.displayName,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Colors.black54,
+                              ),
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 2.0,
+                                ),
+                                child: Text(
+                                  feed.date.split('T')[0],
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                    color: Colors.black38,
+                                  ),
+                                ))
+                          ],
+                        )),
                   ],
                 ),
               ),
@@ -69,8 +90,8 @@ class FeedTile extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(
                   top: 8.0,
-                  left: 8.0,
-                  right: 8.0,
+                  left: 12.0,
+                  right: 12.0,
                   bottom: 8,
                 ),
                 child: Container(
@@ -84,8 +105,8 @@ class FeedTile extends StatelessWidget {
                   child: Text(
                     feed.feedText,
                     style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey.shade700,
+                      fontSize: 18,
+                      color: Colors.black87,
                     ),
                   ),
                 ),
@@ -94,36 +115,42 @@ class FeedTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            '/comment',
-                            arguments: feed.feedId,
-                          );
-                        },
-                        icon: Icon(
-                          Icons.comment,
-                          color: Colors.grey,
-                        ),
+                    children: feed.commentList.length > 0
+                        ? [
+                            IconButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  '/comment',
+                                  arguments: feed.feedId,
+                                );
+                              },
+                              icon: Icon(
+                                Icons.comment,
+                                color: Colors.grey.shade700,
+                              ),
+                            ),
+                            Text(
+                              feed.commentList.length.toString(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black54,
+                              ),
+                            )
+                          ]
+                        : [],
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.only(
+                        left: 16.0,
                       ),
-                      Text(
-                        feed.commentList.length.toString(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey.shade600,
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.report_outlined,
+                          color: Colors.black,
                         ),
-                      )
-                    ],
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.report_outlined,
-                      color: Colors.grey,
-                    ),
-                  ),
+                      )),
                 ],
               )
             ],

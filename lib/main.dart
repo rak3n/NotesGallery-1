@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
           ),
           home: auth.userId != null
-              ? MyHomePage()
+              ? DiscussionPanelScreen()
               : FutureBuilder(
                   future: auth.autoLogin(),
                   builder: (ctx, snapshot) =>
