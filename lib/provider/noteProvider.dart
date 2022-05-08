@@ -169,21 +169,25 @@ class NotesProvider with ChangeNotifier {
     if (responseData == null) return;
     print('Response  data for fetch Pdf--->$responseData');
     final List<Note> noteTempList = [];
-    responseData.forEach((id, noteData) {
-      noteTempList.add(
-        Note(
-          year: noteData['year'],
-          subject: noteData['subject'],
-          creatorId: 'creatorId',
-          noteId: id,
-          name: noteData['name'],
-          url: noteData['url'],
-          likes: noteData['likes'] == null
-              ? []
-              : noteData['likes'] as List, //TODO: change here:
-        ),
-      );
-    });
+    responseData.forEach(
+      (id, noteData) {
+        noteTempList.add(
+          Note(
+            year: noteData['year'],
+            subject: noteData['subject'],
+            creatorId: 'creatorId',
+            noteId: id,
+            name: noteData['name'],
+            branch: noteData['branch'],
+            url: noteData['url'],
+            likes: noteData['likes'] == null
+                ? []
+                : noteData['likes'] as List, //TODO: change here:
+          ),
+        );
+      },
+    );
+//TODO: change according to branch and year;
     notesList = noteTempList;
 
     print(" fetchNotes response->     ${json.decode(response.body)}");

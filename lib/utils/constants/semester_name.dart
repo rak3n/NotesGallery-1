@@ -1,4 +1,4 @@
-const semList = [
+const yearList = [
   'FIRST YEAR',
   'SECOND YEAR',
   'THIRD YEAR',

@@ -3,6 +3,7 @@ import 'package:notes_gallery/models/note.dart';
 import 'package:notes_gallery/provider/authProvider.dart';
 import 'package:notes_gallery/provider/noteProvider.dart';
 import 'package:notes_gallery/screens/NotesScreen/widgets/pdfCard.dart';
+import 'package:notes_gallery/utils/constants/semester_name.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -46,14 +47,15 @@ class _NotesScreenState extends State<NotesScreen> {
         final provider = Provider.of<NotesProvider>(context, listen: false);
         await provider.addPdfNote(
           Note(
-            subject: note.subject,
-            year: note.year,
-            creatorId: note.creatorId,
-            noteId: note.noteId,
-            name: note.name,
-            url: downloadUrl,
-            likes: note.likes,
-          ),
+              subject: note.subject,
+              year: note.year,
+              creatorId: note.creatorId,
+              noteId: note.noteId,
+              name: note.name,
+              url: downloadUrl,
+              likes: note.likes,
+              branch: "ruk abi" //TODO: change gere;
+              ),
         );
         Navigator.pop(context);
         EasyLoading.dismiss();
@@ -78,6 +80,7 @@ class _NotesScreenState extends State<NotesScreen> {
   Widget build(BuildContext context) {
     String subject = "";
     String year = "";
+    String branch = "";
     final isAdmin = Provider.of<Authentication>(context, listen: true).isAdmin;
     return Scaffold(
       backgroundColor: Colors.grey.shade300,
@@ -144,10 +147,31 @@ class _NotesScreenState extends State<NotesScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               DropdownButton<String>(
+                                hint: Text(branch.isEmpty
+                                    ? "select your branch"
+                                    : branch),
+                                items: <String>[
+                                  'Computer Science',
+                                  'Mechanical',
+                                  'Electrical',
+                                  'Civil',
+                                  'Electronics',
+                                ].map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    year = value ?? "";
+                                  });
+                                },
+                              ),
+                              DropdownButton<String>(
                                 hint:
                                     Text(year.isEmpty ? "select a year" : year),
-                                items: <String>['I', 'II', 'III', 'IV']
-                                    .map((String value) {
+                                items: yearList.map((String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
                                     child: Text(value),
@@ -190,15 +214,19 @@ class _NotesScreenState extends State<NotesScreen> {
                                   child: Center(
                                     child: GestureDetector(
                                       onTap: () {
-                                        getPdfAndUpload(Note(
-                                          subject: subject,
-                                          year: year,
-                                          creatorId: note.userId ?? "",
-                                          noteId: "",
-                                          name: "name",
-                                          url: "",
-                                          likes: [],
-                                        ));
+                                        getPdfAndUpload(
+                                          Note(
+                                            subject: subject,
+                                            year: year,
+                                            creatorId: note.userId ?? "",
+                                            noteId: "",
+                                            name: "name", //TODO: change here
+                                            url: "",
+                                            branch: "aaa", //TODO change here
+
+                                            likes: [],
+                                          ),
+                                        );
                                       },
                                       child: Text(
                                         "Select a file",

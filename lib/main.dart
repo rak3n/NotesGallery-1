@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:notes_gallery/provider/discussionProvider.dart';
 import 'package:notes_gallery/screens/CommentsScreen/comments_screen.dart';
 import 'package:notes_gallery/screens/DiscussionPanelScreen/discussion_panel_screen.dart';
+import 'package:notes_gallery/screens/HomePageScreen/home_page_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../provider/authProvider.dart';
@@ -48,13 +49,13 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
           ),
           home: auth.userId != null
-              ? DiscussionPanelScreen()
+              ? MyHomePage()
               : FutureBuilder(
                   future: auth.autoLogin(),
                   builder: (ctx, snapshot) =>
                       snapshot.connectionState == ConnectionState.waiting
-                          ? DiscussionPanelScreen()
-                          : DiscussionPanelScreen(),
+                          ? SplashScreen()
+                          : LoginScreen(),
                 ),
           builder: EasyLoading.init(),
           routes: {

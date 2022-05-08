@@ -52,9 +52,10 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text(
                 "Welcome User",
                 style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(28, 101, 133, 1)),
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromRGBO(28, 101, 133, 1),
+                ),
               ),
             ),
             SizedBox(

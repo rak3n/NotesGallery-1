@@ -1,5 +1,6 @@
 class Note {
   final String year;
+  final String branch;
   final String subject;
   final String creatorId;
   final String name;
@@ -9,6 +10,7 @@ class Note {
   Note({
     required this.subject,
     required this.year,
+    required this.branch,
     required this.creatorId,
     required this.noteId,
     required this.name,
