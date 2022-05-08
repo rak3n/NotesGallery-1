@@ -16,7 +16,7 @@ class CommentsScreen extends StatefulWidget {
 
 class _CommentsScreenState extends State<CommentsScreen> {
   final commentController = TextEditingController();
-
+  bool showErrorText = false;
   @override
   Widget build(BuildContext context) {
     final String feedId = ModalRoute.of(context)?.settings.arguments as String;
@@ -57,6 +57,21 @@ class _CommentsScreenState extends State<CommentsScreen> {
                               ),
                               hintText: "Write Down Something...!",
                             ),
+                            onChanged: (val) {
+                              setState(() {
+                                showErrorText = false;
+                              });
+                            },
+                          ),
+                          Visibility(
+                            visible: showErrorText,
+                            child: Text(
+                              "Comment field cannot be left empty!",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.red,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -67,25 +82,33 @@ class _CommentsScreenState extends State<CommentsScreen> {
                           style: ElevatedButton.styleFrom(
                             primary: Colors.blueGrey,
                           ),
-                          onPressed: () {
-                            print(auth.currentUser?.displayName ??
-                                "nakcnkacnaka&&&7");
-                            Provider.of<DiscussionProvider>(context,
-                                    listen: false)
-                                .postComment(
-                              currentUser: auth.currentUser ??
-                                  UserModel(
-                                    uid: "",
-                                    displayName: "",
-                                    isStudent: true,
-                                  ),
-                              feedId: feedId,
-                              commentText: commentController.text,
-                            );
-
-                            Navigator.of(context).pop();
-                            commentController.clear();
-                          },
+                          onPressed: commentController.text.isEmpty
+                              ? () {
+                                  setState(() {
+                                    showErrorText = true;
+                                  });
+                                }
+                              : () {
+                                  print(
+                                      auth.currentUser?.displayName ?? "rocky");
+                                  Provider.of<DiscussionProvider>(context,
+                                          listen: false)
+                                      .postComment(
+                                    currentUser: auth.currentUser ??
+                                        UserModel(
+                                          uid: "",
+                                          displayName: "",
+                                          isStudent: true,
+                                        ),
+                                    feedId: feedId,
+                                    commentText: commentController.text,
+                                  );
+                                  setState(() {
+                                    showErrorText = false;
+                                  });
+                                  Navigator.of(context).pop();
+                                  commentController.clear();
+                                },
                           child: Text(
                             "Go",
                             style: TextStyle(

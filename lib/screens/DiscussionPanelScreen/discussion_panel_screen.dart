@@ -25,35 +25,11 @@ class _DiscussionPanelScreenState extends State<DiscussionPanelScreen> {
   }
 
   bool isLoading = false;
+  bool showErrorText = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-
-        // toolbarOpacity: 0,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Discussion",
-              style: TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(28, 101, 133, 1)),
-            ),
-            Text(
-              "Frequently Asked Questions",
-              style: TextStyle(
-                fontSize: 14,
-                color: Color.fromRGBO(169, 170, 183, 1),
-              ),
-            ),
-          ],
-        ),
-      ),
       body: FutureBuilder(
         future: loadFeeds(),
         builder: (ctx, snapShot) =>
@@ -106,6 +82,21 @@ class _DiscussionPanelScreenState extends State<DiscussionPanelScreen> {
                           ),
                           hintText: "Write Down Something...!",
                         ),
+                        onChanged: (val) {
+                          setState(() {
+                            showErrorText = false;
+                          });
+                        },
+                      ),
+                      Visibility(
+                        visible: showErrorText,
+                        child: Text(
+                          "Post field cannot be left empty!",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.red,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -116,21 +107,30 @@ class _DiscussionPanelScreenState extends State<DiscussionPanelScreen> {
                       style: ElevatedButton.styleFrom(
                         primary: Colors.blueGrey,
                       ),
-                      onPressed: () {
-                        Provider.of<DiscussionProvider>(context, listen: false)
-                            .postFeed(
-                          currentUser: auth.currentUser ??
-                              UserModel(
-                                uid: "",
-                                displayName: "",
-                                isStudent: true,
-                              ),
-                          feedText: feedTextController.text,
-                        );
-
-                        Navigator.of(context).pop();
-                        feedTextController.clear();
-                      },
+                      onPressed: feedTextController.text.isEmpty
+                          ? () {
+                              setState(() {
+                                showErrorText = true;
+                              });
+                            }
+                          : () {
+                              Provider.of<DiscussionProvider>(context,
+                                      listen: false)
+                                  .postFeed(
+                                currentUser: auth.currentUser ??
+                                    UserModel(
+                                      uid: "",
+                                      displayName: "",
+                                      isStudent: true,
+                                    ),
+                                feedText: feedTextController.text,
+                              );
+                              setState(() {
+                                showErrorText = false;
+                              });
+                              Navigator.of(context).pop();
+                              feedTextController.clear();
+                            },
                       child: Text(
                         "POST",
                         style: TextStyle(

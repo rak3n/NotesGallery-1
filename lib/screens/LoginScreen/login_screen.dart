@@ -74,6 +74,17 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Mail cannot be empty";
+                        }
+
+                        if (!value.contains("@jietjodhpur.ac.in")) {
+                          //TODO: change condition for jietjodhpur
+                          return "Please enter your college mail id";
+                        }
+                        return null;
+                      },
                     ),
                     SizedBox(
                       height: 40,
@@ -97,47 +108,61 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Password is required";
+                        }
+
+                        return null;
+                      },
                     ),
                     SizedBox(
                       height: 40,
                     ),
                     Consumer<Authentication>(
-                      builder: (context, auth, child) => Container(
-                        height: 40,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            width: 1.3,
-                            color: Color.fromRGBO(28, 101, 133, 1),
+                      builder: (context, auth, child) => InkWell(
+                        onTap: () async {
+                          if (!_formKey.currentState!.validate()) {
+                            return;
+                          }
+                          setState(() {
+                            isLoading = true;
+                          });
+                          _formKey.currentState!.save();
+
+                          final status = await auth.signIn(
+                              mailController.text, passwordController.text);
+                          setState(() {
+                            isLoading = false;
+                          });
+                          if (status != "successful") {
+                            // showErrorDialog(status ?? "");
+                            ScaffoldMessenger.of(context)
+                              ..hideCurrentSnackBar()
+                              ..showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    status ?? "something went wrong",
+                                  ),
+                                ),
+                              );
+                          } else {
+                            Navigator.pushReplacementNamed(context, '/home');
+                          }
+                        },
+                        child: Container(
+                          height: 40,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              width: 1.3,
+                              color: Color.fromRGBO(28, 101, 133, 1),
+                            ),
                           ),
-                        ),
-                        child: isLoading
-                            ? Center(child: Indicator())
-                            : Center(
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    if (!_formKey.currentState!.validate()) {
-                                      return;
-                                    }
-                                    setState(() {
-                                      isLoading = true;
-                                    });
-                                    _formKey.currentState!.save();
-
-                                    final status = await auth.signIn(
-                                        mailController.text,
-                                        passwordController.text);
-                                    setState(() {
-                                      isLoading = false;
-                                    });
-                                    if (status != "successful") {
-                                      showErrorDialog(status ?? "");
-                                    }
-
-                                    Navigator.pushReplacementNamed(
-                                        context, '/home');
-                                  },
+                          child: isLoading
+                              ? Center(child: Indicator())
+                              : Center(
                                   child: const Text(
                                     'Login',
                                     style: TextStyle(
@@ -147,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                 ),
-                              ),
+                        ),
                       ),
                     ),
                     SizedBox(
