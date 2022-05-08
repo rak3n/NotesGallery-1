@@ -29,31 +29,34 @@ class _DiscussionPanelScreenState extends State<DiscussionPanelScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-
-        // toolbarOpacity: 0,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Discussion",
-              style: TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(28, 101, 133, 1)),
-            ),
-            Text(
-              "Frequently Asked Questions",
-              style: TextStyle(
-                fontSize: 14,
-                color: Color.fromRGBO(169, 170, 183, 1),
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(70.0),
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              // toolbarOpacity: 0,
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Discussion",
+                    style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(28, 101, 133, 1)),
+                  ),
+                  Text(
+                    "Frequently Asked Questions",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color.fromRGBO(169, 170, 183, 1),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
-      ),
+            )
+          ])),
       body: FutureBuilder(
         future: loadFeeds(),
         builder: (ctx, snapShot) =>

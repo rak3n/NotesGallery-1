@@ -98,14 +98,14 @@ class _CommentsScreenState extends State<CommentsScreen> {
           )
         ],
         backgroundColor: Color.fromRGBO(28, 101, 133, 1),
-        title: Text(
-          "Comments",
-          style: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
+        // title: Text(
+        //   "Comments",
+        //   style: TextStyle(
+        //     fontSize: 17,
+        //     fontWeight: FontWeight.bold,
+        //     color: Colors.white,
+        //   ),
+        // ),
       ),
       body: ListView(
         children: [
@@ -124,33 +124,61 @@ class _CommentsScreenState extends State<CommentsScreen> {
                     right: 8.0,
                     top: 8.0,
                   ),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 16,
-                        backgroundColor: Colors.blueGrey,
-                        child: Text(
-                          getFirstChar(feed.postedBy.displayName),
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            color: Colors.white,
+                  child: Padding(
+                      padding: const EdgeInsets.only(
+                        top: 8.0,
+                        left: 8.0,
+                        right: 8.0,
+                        bottom: 8,
+                      ),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 18,
+                            backgroundColor: Colors.blueGrey,
+                            child: Text(
+                              getFirstChar(feed.postedBy.displayName),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        feed.postedBy.displayName,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Colors.grey.shade700,
-                        ),
-                      ),
-                    ],
-                  ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                left: 8.0,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    feed.postedBy.displayName,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      color: Colors.black54,
+                                    ),
+                                  ),
+                                  Padding(
+                                      padding: const EdgeInsets.only(
+                                        top: 2.0,
+                                      ),
+                                      child: Text(
+                                        feed.date.split('T')[0],
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12,
+                                          color: Colors.black38,
+                                        ),
+                                      ))
+                                ],
+                              )),
+                        ],
+                      )),
                 ),
                 Divider(
                   indent: 18,
@@ -174,8 +202,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
                     child: Text(
                       feed.feedText,
                       style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey.shade700,
+                        fontSize: 18,
+                        color: Colors.black87,
                       ),
                     ),
                   ),
