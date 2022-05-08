@@ -128,12 +128,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                     final status = await auth.signIn(
                                         mailController.text,
                                         passwordController.text);
-                                    if (status != "successful") {
-                                      showErrorDialog(status ?? "");
-                                    }
                                     setState(() {
                                       isLoading = false;
                                     });
+                                    if (status != "successful") {
+                                      showErrorDialog(status ?? "");
+                                    }
+
                                     Navigator.pushReplacementNamed(
                                         context, '/home');
                                   },

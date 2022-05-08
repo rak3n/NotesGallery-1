@@ -213,6 +213,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     });
                                     if (status != "successful") {
                                       showErrorDialog(status ?? "");
+                                    } else {
+                                      Navigator.pushReplacementNamed(
+                                          context, '/home');
                                     }
                                   },
                                   child: const Text(

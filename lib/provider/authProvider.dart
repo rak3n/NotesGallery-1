@@ -75,7 +75,12 @@ class Authentication with ChangeNotifier {
       );
 
       final prefs = await SharedPreferences.getInstance();
-      prefs.setString('userId', _userId ?? "");
+      final userData = json.encode({
+        'userId': _currentUser?.uid,
+        'userName': _currentUser?.displayName,
+        'isStudent': _currentUser?.isStudent,
+      });
+      prefs.setString('userData', userData);
       print("prefs setted >>>>>");
       print(currentUser?.displayName ?? "");
 
@@ -91,16 +96,34 @@ class Authentication with ChangeNotifier {
   }
 
   Future<bool> autoLogin() async {
+    print("1.run ninng/....");
     final prefs = await SharedPreferences.getInstance();
-    if (!prefs.containsKey("userId")) {
+    if (!prefs.containsKey("userData")) {
       return false;
     }
-    final uid = prefs.getString("userId");
-    if (uid == "") {
+    print("2.run ninng/....");
+
+    final extractedData =
+        json.decode(prefs.getString("userData") ?? "") as Map<String, dynamic>;
+    print("3.run ninng/....");
+
+    if (extractedData['userId'] == null) {
       return false;
     }
-    _userId = uid;
-    print("AUTO LOGIN BLOC ---->     ${_userId}");
+    print("4.run ninng/....");
+
+    _userId = extractedData['userId'];
+    _name = extractedData['userName'];
+    _isAdmin = extractedData['isStudent'];
+
+    print("AUTO LOGIN BLOC USER ID---->     ${_userId}");
+
+    print("AUTO LOGIN BLOC USER ADMMIN---->     ${_isAdmin}");
+
+    _currentUser = UserModel(
+        displayName: _name ?? "",
+        isStudent: _isAdmin ?? true,
+        uid: _userId ?? "");
     notifyListeners();
     return true;
   }
