@@ -66,8 +66,10 @@ class _NotesScreenState extends State<NotesScreen> {
     }
   }
 
+  var argumentsMap;
+
   Future<void> _loadPDfs(BuildContext context) async {
-    final argumentsMap = ModalRoute.of(context)!.settings.arguments as Map;
+    argumentsMap = ModalRoute.of(context)!.settings.arguments as Map;
     print(argumentsMap['branch']);
     print(argumentsMap['year']);
     await Provider.of<NotesProvider>(context, listen: false).fetchNotes(
@@ -79,16 +81,18 @@ class _NotesScreenState extends State<NotesScreen> {
 
   @override
   void initState() {
+    //argumentsMap = ModalRoute.of(context)!.settings.arguments as Map;
     Provider.of<NotesProvider>(context, listen: false).fetchSubjectsLists();
     super.initState();
   }
 
-//TODO: take routes hhere
   @override
   Widget build(BuildContext context) {
+    argumentsMap = ModalRoute.of(context)!.settings.arguments as Map;
+
     String subject = "";
-    String year = "";
-    String branch = "";
+    String year = argumentsMap['year'];
+    String branch = argumentsMap['branch'];
     final isAdmin = Provider.of<Authentication>(context, listen: true).isAdmin;
     return Scaffold(
       backgroundColor: Colors.grey.shade300,

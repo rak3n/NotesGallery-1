@@ -14,18 +14,26 @@ List<Branch> data = [
     assetsString: "assets/ece.jpg",
   ),
   Branch(
-    branch: "Electrical Engineering",
+    branch: "Electrical",
     color: Color.fromRGBO(67, 28, 117, 1),
     assetsString: "assets/ee.jpg",
   ),
   Branch(
-    branch: "Civil Engineering",
+    branch: "Civil",
     color: Color.fromRGBO(28, 101, 133, 1),
     assetsString: "assets/cv.jpg",
   ),
   Branch(
-    branch: "Mechanical Engineering",
+    branch: "Mechanical",
     color: Color.fromRGBO(28, 101, 133, 1),
     assetsString: "assets/me.jpg",
   ),
+];
+
+final branch_data = [
+  "Mechanical",
+  "Civil",
+  "Electrical",
+  "Computer Science",
+  "Electronics & Communication",
 ];

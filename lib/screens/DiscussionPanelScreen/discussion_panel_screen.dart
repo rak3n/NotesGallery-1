@@ -36,14 +36,30 @@ class _DiscussionPanelScreenState extends State<DiscussionPanelScreen> {
             snapShot.connectionState == ConnectionState.waiting
                 ? Center(
                     child: CircularProgressIndicator(
-                    color: Colors.grey,
-                  ))
-                : Consumer<DiscussionProvider>(
-                    builder: (ctx, feed, _) => ListView.builder(
-                      itemCount: feed.feedList.length,
-                      itemBuilder: (ctx, i) => FeedTile(
-                        feed.feedList[i],
-                      ),
+                      color: Colors.grey,
+                    ),
+                  )
+                : RefreshIndicator(
+                    onRefresh: loadFeeds,
+                    child: Consumer<DiscussionProvider>(
+                      builder: (ctx, feed, _) => feed.feedList.isEmpty
+                          ? Center(
+                              heightFactor: 20,
+                              child: Text(
+                                "Nothing discussed yet!",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            )
+                          : ListView.builder(
+                              itemCount: feed.feedList.length,
+                              itemBuilder: (ctx, i) => FeedTile(
+                                feed.feedList[i],
+                              ),
+                            ),
                     ),
                   ),
       ),
