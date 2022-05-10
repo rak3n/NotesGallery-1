@@ -41,6 +41,7 @@ class _DiscussionPanelScreenState extends State<DiscussionPanelScreen> {
                   )
                 : RefreshIndicator(
                     onRefresh: loadFeeds,
+                    color: Colors.grey,
                     child: Consumer<DiscussionProvider>(
                       builder: (ctx, feed, _) => feed.feedList.isEmpty
                           ? Center(
@@ -146,6 +147,7 @@ class _DiscussionPanelScreenState extends State<DiscussionPanelScreen> {
                               });
                               Navigator.of(context).pop();
                               feedTextController.clear();
+                              loadFeeds();
                             },
                       child: Text(
                         "POST",

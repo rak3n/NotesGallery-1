@@ -87,6 +87,12 @@ class _NotesScreenState extends State<NotesScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    Provider.of<NotesProvider>(context, listen: false).fetchSubjectsLists();
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     argumentsMap = ModalRoute.of(context)!.settings.arguments as Map;
 

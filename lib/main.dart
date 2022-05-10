@@ -49,7 +49,6 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-
           home: auth.userId != null
               ? MyHomePage()
               : FutureBuilder(
@@ -59,7 +58,7 @@ class MyApp extends StatelessWidget {
                           ? SplashScreen()
                           : LoginScreen(),
                 ),
-          //builder: EasyLoading.init(),
+          builder: EasyLoading.init(),
           routes: {
             MyHomePage.routName: (ctx) => MyHomePage(),
             DiscussionPanelScreen.routeName: (ctx) => DiscussionPanelScreen(),
