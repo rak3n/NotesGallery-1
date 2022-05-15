@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:notes_gallery/models/feedModel.dart';
+import 'package:notes_gallery/provider/discussionProvider.dart';
 import 'package:notes_gallery/screens/DiscussionPanelScreen/widgets/helper_function.dart';
+import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class FeedTile extends StatelessWidget {
   final Feed feed;
@@ -117,11 +120,49 @@ class FeedTile extends StatelessWidget {
                       )
                     ],
                   ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.report_outlined,
-                      color: Colors.grey,
+                  Consumer<DiscussionProvider>(
+                    builder: (ctx, feedProvider, _) => IconButton(
+                      onPressed: () {
+                        Provider.of<DiscussionProvider>(context, listen: false)
+                            .reportUserFeed(
+                                feedId: feed.feedId,
+                                uid: feedProvider.uid ?? "");
+
+                        ScaffoldMessenger.of(context)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(SnackBar(
+                              content: Text("Feed reported successfully")));
+                      },
+                      icon: Icon(
+                        Icons.report_outlined,
+                        color: feed.isReported ? Colors.red : Colors.grey,
+                      ),
+                    ),
+                  ),
+                  Consumer<DiscussionProvider>(
+                    builder: (ctx, feedProvider, _) => Visibility(
+                      visible: feedProvider.uid == feed.postedBy.uid,
+                      child: IconButton(
+                        onPressed: () {
+                          Provider.of<DiscussionProvider>(context,
+                                  listen: false)
+                              .deleteFeed(
+                                  feedId: feed.feedId,
+                                  uid: feedProvider.uid ?? "");
+
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentSnackBar()
+                            ..showSnackBar(
+                              SnackBar(
+                                content: Text("Feed deleted successfully"),
+                              ),
+                            );
+                        },
+                        icon: Icon(
+                          Icons.delete_outline_outlined,
+                          color: Colors.grey,
+                        ),
+                      ),
                     ),
                   ),
                 ],

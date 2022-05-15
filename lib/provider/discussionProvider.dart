@@ -7,12 +7,25 @@ import 'package:notes_gallery/models/userModel.dart';
 
 class DiscussionProvider with ChangeNotifier {
   List<Feed> feedList = [];
+  final String? uid;
+  DiscussionProvider({
+    required this.feedList,
+    required this.uid,
+  });
 
   Future<void> fetchFeeds() async {
     final url =
         Uri.parse("http://protected-waters-32301.herokuapp.com/getFeeds");
 
-    final response = await http.get(url);
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({
+        'uid': uid,
+      }),
+    );
 
     print("RESPonsE OF GET FEED  --->${response.body}");
 
@@ -29,6 +42,7 @@ class DiscussionProvider with ChangeNotifier {
       });
       final Feed feedItem = Feed(
         feedId: feed['feedId'],
+        isReported: feed['isReported'],
         feedText: feed['feedText'],
         date: feed["date"],
         commentList: comments,
@@ -75,6 +89,7 @@ class DiscussionProvider with ChangeNotifier {
         date: DateTime.now().toIso8601String(),
         commentList: [],
         postedBy: currentUser,
+        isReported: false,
       ),
     );
     notifyListeners();
@@ -121,5 +136,48 @@ class DiscussionProvider with ChangeNotifier {
       ),
     );
     notifyListeners();
+  }
+
+  Future<void> reportUserFeed(
+      {required String feedId, required String uid}) async {
+    final url =
+        Uri.parse("http://protected-waters-32301.herokuapp.com/reportFeed");
+
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(
+        {
+          'id': feedId,
+          'uid': uid,
+        },
+      ),
+    );
+
+    print("REPORT FEEd :))))))_____):-> ${json.decode(response.body)}");
+  }
+
+  Future<void> deleteFeed({required String feedId, required String uid}) async {
+    final url =
+        Uri.parse("http://protected-waters-32301.herokuapp.com/deleteFeed");
+
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(
+        {
+          'id': feedId,
+          'uid': uid,
+        },
+      ),
+    );
+    feedList.removeWhere((element) => element.feedId == feedId);
+    notifyListeners();
+
+    print("DELETE  FEEd :))))))_____):-> ${json.decode(response.body)}");
   }
 }

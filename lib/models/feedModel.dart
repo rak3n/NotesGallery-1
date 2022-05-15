@@ -7,11 +7,13 @@ class Feed {
   final String date;
   final UserModel postedBy;
   final List<Comment> commentList;
+  final bool isReported;
   Feed({
     required this.feedId,
     required this.feedText,
     required this.date,
     required this.commentList,
     required this.postedBy,
+    required this.isReported,
   });
 }

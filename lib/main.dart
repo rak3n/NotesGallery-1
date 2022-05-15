@@ -38,8 +38,12 @@ class MyApp extends StatelessWidget {
             notesList: value?.notesList ?? [],
           ),
         ),
-        ChangeNotifierProvider.value(
-          value: DiscussionProvider(),
+        ChangeNotifierProxyProvider<Authentication, DiscussionProvider>(
+          create: (_) => DiscussionProvider(feedList: [], uid: ''),
+          update: (context, auth, value) => DiscussionProvider(
+            feedList: value?.feedList ?? [],
+            uid: auth.userId,
+          ),
         ),
       ],
       child: Consumer<Authentication>(

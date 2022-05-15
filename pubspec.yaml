@@ -39,6 +39,7 @@ dependencies:
   flutter_easyloading: ^3.0.3
   syncfusion_flutter_pdfviewer: ^19.4.56-beta
   firebase_auth: ^3.3.15
+  fluttertoast: ^8.0.9
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +70,7 @@ flutter:
     - assets/ece.jpg
     - assets/me.jpg
     - assets/cv.jpg
+    - assets/books.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
