@@ -178,6 +178,6 @@ class DiscussionProvider with ChangeNotifier {
     feedList.removeWhere((element) => element.feedId == feedId);
     notifyListeners();
 
-    print("DELETE  FEEd :))))))_____):-> ${json.decode(response.body)}");
+    "DELETE  FEEd :))))))_____):-> ${json.decode(response.body)}");
   }
 }

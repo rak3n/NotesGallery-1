@@ -46,7 +46,7 @@ class NotesProvider with ChangeNotifier {
         body: json.encode({
           'likes': note.likes,
         }));
-    print(" UPLOAD RESPONSE->.>>>>  ${response.body}");
+    " UPLOAD RESPONSE->.>>>>  ${response.body}");
     notesList[index].likes = note.likes;
     notifyListeners();
   }
@@ -88,7 +88,7 @@ class NotesProvider with ChangeNotifier {
           'description': 'Some description...'
         }));
     final downloadUrl = await snapshot.ref.getDownloadURL();
-    print(downloadUrl);
+   
     return downloadUrl;
   }
 
@@ -107,7 +107,7 @@ class NotesProvider with ChangeNotifier {
             'url': note.url,
             'branch': note.branch,
           }));
-      print("RESPONSE BODY->${response.body}");
+    
     } catch (e) {
       print(e);
     }
@@ -195,8 +195,7 @@ class NotesProvider with ChangeNotifier {
       );
 
       if (filterByBranchAndYear) {
-        print("jcasjsvnnsviknvsvnsvsvsvs");
-        print(noteTempList[0].branch);
+      
         notesList = noteTempList
             .where(
                 (element) => element.branch == branch && element.year == year)
@@ -208,8 +207,6 @@ class NotesProvider with ChangeNotifier {
       print(e);
     }
 
-    print('MY DTA A LIST ------..DDVDVDV/....>>   $notesList');
-    print(notesList.length);
     notifyListeners();
   }
 

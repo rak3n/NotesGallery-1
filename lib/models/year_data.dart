@@ -30,6 +30,7 @@ List<Branch> data = [
   ),
 ];
 
+// ignore: non_constant_identifier_names
 final branch_data = [
   "Mechanical",
   "Civil",

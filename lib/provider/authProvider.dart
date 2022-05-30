@@ -81,8 +81,6 @@ class Authentication with ChangeNotifier {
         'isStudent': _currentUser?.isStudent,
       });
       prefs.setString('userData', userData);
-      print("prefs setted >>>>>");
-      print(currentUser?.displayName ?? "");
 
       notifyListeners();
 
@@ -116,10 +114,6 @@ class Authentication with ChangeNotifier {
     _name = extractedData['userName'];
     _isAdmin = extractedData['isStudent'];
 
-    print("AUTO LOGIN BLOC USER ID---->     ${_userId}");
-
-    print("AUTO LOGIN BLOC USER ADMMIN---->     ${_isAdmin}");
-
     _currentUser = UserModel(
         displayName: _name ?? "",
         isStudent: _isAdmin ?? true,
@@ -129,7 +123,6 @@ class Authentication with ChangeNotifier {
   }
 
   void logout() async {
-    print("hitted");
     _userId = null;
     _token = null;
     final prefs = await SharedPreferences.getInstance();
@@ -157,7 +150,7 @@ class Authentication with ChangeNotifier {
       );
       final adminResponse = json.decode(isAdminResponse.body);
       _isAdmin = adminResponse['idAdmin'];
-      print("^^^^^^^&&&&&&&&&&&&&&&${_isAdmin}");
+
       notifyListeners();
       final response = await http.post(
         Uri.parse(url),
