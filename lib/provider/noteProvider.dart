@@ -46,7 +46,7 @@ class NotesProvider with ChangeNotifier {
         body: json.encode({
           'likes': note.likes,
         }));
-    " UPLOAD RESPONSE->.>>>>  ${response.body}");
+    print(" UPLOAD RESPONSE->.>>>>  ${response.body}");
     notesList[index].likes = note.likes;
     notifyListeners();
   }
@@ -66,7 +66,7 @@ class NotesProvider with ChangeNotifier {
         body: json.encode({
           'likes': note.likes,
         }));
-    print(" UPLOAD RESPONSE->.>>>>  ${response.body}");
+
     notesList[index].likes = note.likes;
     notifyListeners();
   }
@@ -88,7 +88,7 @@ class NotesProvider with ChangeNotifier {
           'description': 'Some description...'
         }));
     final downloadUrl = await snapshot.ref.getDownloadURL();
-   
+
     return downloadUrl;
   }
 
@@ -107,7 +107,6 @@ class NotesProvider with ChangeNotifier {
             'url': note.url,
             'branch': note.branch,
           }));
-    
     } catch (e) {
       print(e);
     }
@@ -195,7 +194,6 @@ class NotesProvider with ChangeNotifier {
       );
 
       if (filterByBranchAndYear) {
-      
         notesList = noteTempList
             .where(
                 (element) => element.branch == branch && element.year == year)

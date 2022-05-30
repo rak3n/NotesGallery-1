@@ -27,8 +27,6 @@ class DiscussionProvider with ChangeNotifier {
       }),
     );
 
-    print("RESPonsE OF GET FEED  --->${response.body}");
-
     final responseData = json.decode(response.body) as List;
 
     final List<Feed> tempFeedList = [];
@@ -55,7 +53,7 @@ class DiscussionProvider with ChangeNotifier {
     });
 
     feedList = tempFeedList;
-    print("YE BOI THIS IS REAL FCK --> ${feedList.length}");
+
     notifyListeners();
   }
 
@@ -93,7 +91,6 @@ class DiscussionProvider with ChangeNotifier {
       ),
     );
     notifyListeners();
-    print("RESPONSE OF POST FEED  --->${resposne.body}");
   }
 
   Future<void> postComment({
@@ -103,7 +100,7 @@ class DiscussionProvider with ChangeNotifier {
   }) async {
     final url =
         Uri.parse("http://protected-waters-32301.herokuapp.com/postComment");
-    print("post comment me jaake user details  ${currentUser.displayName} ");
+
     final resposne = await http.post(
       url,
       headers: <String, String>{
@@ -121,7 +118,6 @@ class DiscussionProvider with ChangeNotifier {
         },
       ),
     );
-    print("RESPONSE OF Commments addition FEED  --->${resposne.body}");
 
     final responseData = json.decode(resposne.body);
 
@@ -155,8 +151,6 @@ class DiscussionProvider with ChangeNotifier {
         },
       ),
     );
-
-    print("REPORT FEEd :))))))_____):-> ${json.decode(response.body)}");
   }
 
   Future<void> deleteFeed({required String feedId, required String uid}) async {
@@ -177,7 +171,5 @@ class DiscussionProvider with ChangeNotifier {
     );
     feedList.removeWhere((element) => element.feedId == feedId);
     notifyListeners();
-
-    "DELETE  FEEd :))))))_____):-> ${json.decode(response.body)}");
   }
 }

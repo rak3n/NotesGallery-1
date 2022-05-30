@@ -1,7 +1,4 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:notes_gallery/models/feedModel.dart';
 import 'package:notes_gallery/models/userModel.dart';
 import 'package:notes_gallery/provider/authProvider.dart';
 import 'package:notes_gallery/provider/discussionProvider.dart';

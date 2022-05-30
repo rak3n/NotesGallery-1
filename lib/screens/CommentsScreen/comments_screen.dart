@@ -89,8 +89,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                   });
                                 }
                               : () {
-                                  print(
-                                      auth.currentUser?.displayName ?? "rocky");
                                   Provider.of<DiscussionProvider>(context,
                                           listen: false)
                                       .postComment(

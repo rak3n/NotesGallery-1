@@ -61,7 +61,6 @@ class Authentication with ChangeNotifier {
       print(" USER user detail-:  ${user.user}");
       IdTokenResult? idTokenResult = await user.user?.getIdTokenResult(true);
       print(" User user-> result  ${idTokenResult!.claims!['user_id']}");
-      print("@@@@@@@@@@@@@@@@@@@--->${idTokenResult.claims}");
 
       _userId = idTokenResult.claims?['user_id'];
       _name = idTokenResult.claims?['displayName'];
@@ -94,21 +93,17 @@ class Authentication with ChangeNotifier {
   }
 
   Future<bool> autoLogin() async {
-    print("1.run ninng/....");
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey("userData")) {
       return false;
     }
-    print("2.run ninng/....");
 
     final extractedData =
         json.decode(prefs.getString("userData") ?? "") as Map<String, dynamic>;
-    print("3.run ninng/....");
 
     if (extractedData['userId'] == null) {
       return false;
     }
-    print("4.run ninng/....");
 
     _userId = extractedData['userId'];
     _name = extractedData['userName'];
@@ -169,7 +164,7 @@ class Authentication with ChangeNotifier {
       );
 
       final responseData = json.decode(response.body);
-      print('SIgn up response --->$responseData');
+
       if (responseData['code'] == 'auth/email-already-exists') {
         throw Exception("user mail already exist");
       }

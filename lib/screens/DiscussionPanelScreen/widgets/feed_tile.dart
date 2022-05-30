@@ -3,7 +3,6 @@ import 'package:notes_gallery/models/feedModel.dart';
 import 'package:notes_gallery/provider/discussionProvider.dart';
 import 'package:notes_gallery/screens/DiscussionPanelScreen/widgets/helper_function.dart';
 import 'package:provider/provider.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class FeedTile extends StatelessWidget {
   final Feed feed;

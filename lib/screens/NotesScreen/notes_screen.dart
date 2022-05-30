@@ -34,7 +34,7 @@ class _NotesScreenState extends State<NotesScreen> {
       try {
         final firebaseRef = instanceFirebase.ref('uploads').child(fileName);
         File resultFile = File(file.files.single.path!);
-        print(resultFile);
+
         EasyLoading.show(status: 'Uploading...');
         final TaskSnapshot snapshot = await firebaseRef.putFile(
             resultFile,
